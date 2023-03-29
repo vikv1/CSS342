@@ -44,16 +44,7 @@ bool Library::removeBook(const string &BookName) {
   if(ind == -1) {
     return false;
   } else {
-   //  for(int i = ind; i < numOfBooks; i++) {  // for loop to shift all elements left so I can keep using numOfBooks as index to add new books
-   //    arr[i] = arr[i + 1];
-   //    if(i == numOfBooks - 1) {
-   //       arr[i + 1] = "";
-   //    }
-   //  } 
-    
-   //  numOfBooks--;
    
-
     arr[ind] = arr[--numOfBooks];
 
     return true;
