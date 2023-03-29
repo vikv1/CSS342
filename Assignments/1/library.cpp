@@ -15,13 +15,9 @@ Library::~Library() {
 
 // true if book found in library
 bool Library::isInLibrary(const string &BookName) const {
-   for(int i = 0; i < arr->size(); i++) {
-      if(arr[i].compare(BookName) == 0) {
-         return true;
-      }
-   }
 
-  return false;
+  return findBook(BookName) != -1; //reuse findbook function because it would be the exact same loop
+
 }
 
 // add a new book
@@ -44,7 +40,7 @@ bool Library::removeBook(const string &BookName) {
   if(ind == -1) {
     return false;
   } else {
-   
+
     arr[ind] = arr[--numOfBooks];
 
     return true;
