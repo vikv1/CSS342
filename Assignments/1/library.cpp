@@ -52,9 +52,9 @@ bool Library::removeBook(const string &BookName) {
    //  } 
     
    //  numOfBooks--;
+   
 
-    arr[ind] = arr[numOfBooks - 1];
-    numOfBooks--;
+    arr[ind] = arr[--numOfBooks];
 
     return true;
   }
