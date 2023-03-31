@@ -3,7 +3,6 @@
 #include <cassert>
 #include <iostream>
 
-
 using namespace std;
 
 void test1() {
@@ -13,32 +12,24 @@ void test1() {
   Libs.addBook("Ulysses");
   Libs.addBook("The Odyssey");
   Libs.listAllBooks();
-  
 
-  
   // should generate already in library message and return true
   bool Result = Libs.isInLibrary("The Odyssey");
   assert(Result);
 
-   
   // cannot add book twice, result should be false
   Result = Libs.addBook("The Odyssey");
   assert(!Result);
-
 
   // test remove, result should be true
   Result = Libs.removeBook("The Odyssey");
   assert(Result);
 
-
   Result = Libs.addBook("a");
   assert(Result);
 
-
-
   Result = Libs.removeBook("In Search of Lost Time");
   assert(Result);
-  
 
   // not in library, result should be false
   Result = Libs.isInLibrary("The Odyssey");
@@ -49,7 +40,6 @@ void test1() {
 
   Result = Libs.isInLibrary("In Search of Lost Time");
   assert(!Result);
-
 
   // cannot remove twice, result should be false
   Result = Libs.removeBook("The Odyssey");
@@ -67,12 +57,10 @@ void test1() {
   Result = Libs.removeBook("a");
   assert(Result);
 
-   //removed all books ^
+  // removed all books ^
 
   cout << "\n";
   Libs.listAllBooks();
-
-
 }
 
 void testAll() {

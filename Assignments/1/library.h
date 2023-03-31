@@ -13,8 +13,6 @@ using namespace std;
 // Library holds books - can add, remove and list books
 class Library {
 
-   static const int MAX = 100;
-   
 
   // display all books in library
   friend ostream &operator<<(ostream &Out, const Library &Lib);
@@ -42,15 +40,24 @@ public:
   // true if book found in library
   bool isInLibrary(const string &BookName) const;
 
+  string getName();
+
+  void setName(string& name);
+
 
    
 private:
    
    int findBook(const string& name) const;
+   
+   static const int MAX = 100;
 
    int numOfBooks;
 
    string arr[MAX];
+
+   string name;
+
 
 };
 
