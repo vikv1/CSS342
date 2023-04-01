@@ -1,9 +1,8 @@
 #include "library.h"
 #include <iostream>
 
-
 // constructor with default name
-Library::Library(const string &Name) { 
+Library::Library(const string &Name) {
   numOfBooks = 0;
   this->name = Name;
 }
@@ -17,8 +16,8 @@ Library::~Library() {
 // true if book found in library
 bool Library::isInLibrary(const string &BookName) const {
 
-  return findBook(BookName) !=
-         -1; // reuse findbook function because it would be the exact same loop
+  // reuse findbook function because it would be the exact same loop
+  return findBook(BookName) != -1;
 }
 
 // add a new book
@@ -36,7 +35,7 @@ bool Library::addBook(const string &BookName) {
 // return true if successfully removed
 // false if book not in library
 bool Library::removeBook(const string &BookName) {
-  int ind = findBook(BookName); //index of book
+  int ind = findBook(BookName); // index of book
 
   if (ind == -1) {
     return false;
@@ -54,10 +53,9 @@ void Library::listAllBooks() const {
          << "\n";
   } else {
     for (int i = 0; i < numOfBooks; i++) {
-       cout << arr[i] << endl;
+      cout << arr[i] << endl;
     }
   }
-  
 }
 
 int Library::findBook(const string &name) const {
@@ -70,12 +68,8 @@ int Library::findBook(const string &name) const {
   return -1;
 }
 
-string Library::getName() {
-   return name;
-}
+string Library::getName() { return name; }
 
-void Library::setName(string& name) {
-   this->name = name;
-}
+void Library::setName(string &name) { this->name = name; }
 
 ostream &operator<<(ostream &Out, const Library &Lib) { return Out; }

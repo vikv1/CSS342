@@ -1,13 +1,12 @@
-#include <iostream>
 #include "getInt.h"
+#include <iostream>
 
-int main() 
-{
-   using namespace std;
+int main() {
+  using namespace std;
 
 #if 1
-   cout << getInteger() << endl;
+  cout << getInteger() << endl;
 #endif
 
-   return 0;
+  return 0;
 }
