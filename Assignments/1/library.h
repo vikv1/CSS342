@@ -18,6 +18,9 @@ class Library {
 
 public:
   // constructor with default name
+  explicit Library();
+
+  // constructor with passed name
   explicit Library(const string &Name);
 
   // destructor
@@ -39,9 +42,11 @@ public:
   // true if book found in library
   bool isInLibrary(const string &BookName) const;
 
+  // return current library name
   string getName();
 
-  void setName(string &name);
+  // set new library name
+  void setName(string name);
 
 private:
   int findBook(const string &name) const;

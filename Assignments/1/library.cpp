@@ -2,10 +2,10 @@
 #include <iostream>
 
 // constructor with default name
-Library::Library(const string &Name) {
-  numOfBooks = 0;
-  this->name = Name;
-}
+Library::Library() : numOfBooks{0}, name{"Library"} {}
+
+// constructor with passed in name
+Library::Library(const string &Name) : numOfBooks{0}, name{Name} {}
 
 // destructor
 // nothing on heap
@@ -70,6 +70,6 @@ int Library::findBook(const string &name) const {
 
 string Library::getName() { return name; }
 
-void Library::setName(string &name) { this->name = name; }
+void Library::setName(string name) { this->name = name; }
 
 ostream &operator<<(ostream &Out, const Library &Lib) { return Out; }
