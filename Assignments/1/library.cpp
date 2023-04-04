@@ -1,7 +1,7 @@
 #include "library.h"
 #include <iostream>
 
-// constructor with default name
+// constructor with default name "Library"
 Library::Library() : numOfBooks{0}, name{"Library"} {}
 
 // constructor with passed in name
