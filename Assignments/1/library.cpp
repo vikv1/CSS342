@@ -72,4 +72,6 @@ string Library::getName() { return name; }
 
 void Library::setName(string name) { this->name = name; }
 
-ostream &operator<<(ostream &Out, const Library &Lib) { return Out; }
+ostream &operator<<(ostream &Out, const Library &Lib) { 
+   return Out; 
+}

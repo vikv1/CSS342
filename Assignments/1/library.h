@@ -16,6 +16,10 @@ class Library {
   // display all books in library
   friend ostream &operator<<(ostream &Out, const Library &Lib);
 
+  // max number of books in library
+  const int MAX = 100;
+
+
 public:
   // constructor with default name
   explicit Library();
@@ -50,8 +54,6 @@ public:
 
 private:
   int findBook(const string &name) const;
-
-  static const int MAX = 100;
 
   int numOfBooks;
 
