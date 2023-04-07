@@ -59,7 +59,7 @@ class Library {
    int getNumOfBooks() const;
 
    // set new library name
-   void setName(string name);
+   void setName(const string& n);
 
  private:
    // max number of books in library

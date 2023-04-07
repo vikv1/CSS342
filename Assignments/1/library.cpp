@@ -158,7 +158,7 @@ string Library::getName() const {
  * @param name
  */
 
-void Library::setName(string n) {
+void Library::setName(const string& n) {
    this->name = n;
 }
 
