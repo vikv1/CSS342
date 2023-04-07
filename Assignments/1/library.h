@@ -23,58 +23,86 @@ using namespace std;
 
 // Library holds books - can add, remove and list books
 class Library {
-   // display all books in library
+   /**
+    * Allows display of books using the << operator
+    */
    friend ostream& operator<<(ostream& Out, const Library& Lib);
 
  public:
-   // constructor with default name
+   /** 
+   * constructor with default name 
+   */
    explicit Library();
 
-   // constructor with passed name
+   /** 
+   * constructor with passed name 
+   */
    explicit Library(const string& Name);
 
-   // destructor
+   /**
+    * Destructor
+    */
    virtual ~Library();
 
-   // add a new book
-   // return true if successful, false if
-   // book already in library
+   /**
+    * Adds a new book to the library and returns true if successful
+    */
    bool addBook(const string& BookName);
 
-   // remove a book
-   // return true if successfully removed
-   // false if book not in library
+   /**
+    * Removes a book from the library and returns true if successful
+    */
    bool removeBook(const string& BookName);
 
-   // list all books
+   /**
+    * List all books
+    */
    void listAllBooks() const;
 
-   // true if book found in library
+   /**
+    * Checks if a book is in the library
+    */
    bool isInLibrary(const string& BookName) const;
 
-   // return current library name
+   /**
+    * Returns the name of the library
+    */
    string getName() const;
 
-   // return number of books in library
+   /**
+    * Returns the number of books in the library
+    */
    int getNumOfBooks() const;
 
-   // set new library name
+   /**
+    * Sets a new library name
+    */
    void setName(const string& n);
 
  private:
-   // max number of books in library
+   /**
+    * Max no. of books in the library
+    */
    static const int MAX = 100;
 
-   // private helper function, finds the index of a book in library
+   /**
+    * Helper function to find index of a book
+    */
    int findBook(const string& name) const;
 
-   // number of current books in library
+   /**
+    * Number of books in the library
+    */
    int numOfBooks;
 
-   // array to hold books set to size 100
+   /**
+    * Holds books
+    */
    string arr[MAX];
 
-   // library name
+   /**
+    * Name of the library
+    */
    string name;
 };
 
