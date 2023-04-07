@@ -28,8 +28,8 @@ echo "*** running myprogram"
 ./myprogram
 
 # valgrind will detect memory leaks
-# echo "*** running with valgrind"
-# valgrind ./myprogram.exe
+echo "*** running with valgrind"
+valgrind ./myprogram
 
 echo "*** cleaning up, deleting myprogram"
 rm myprogram

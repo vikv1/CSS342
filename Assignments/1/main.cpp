@@ -1,74 +1,95 @@
-#include "library.h"
-
 #include <cassert>
 #include <iostream>
+
+#include "library.h"
 
 using namespace std;
 
 void test1() {
-  Library Libs("UWB");
-  Libs.addBook("Don Quixote");
-  Libs.addBook("In Search of Lost Time");
-  Libs.addBook("Ulysses");
-  Libs.addBook("The Odyssey");
-  Libs.listAllBooks();
+   string name = "UWB";
+   Library libs(name);
+   libs.addBook("Don Quixote");
+   libs.addBook("In Search of Lost Time");
+   libs.addBook("Ulysses");
+   libs.addBook("The Odyssey");
+   libs.listAllBooks();
 
-  // should generate already in library message and return true
-  bool Result = Libs.isInLibrary("The Odyssey");
-  assert(Result);
+   cout << libs << endl;
 
-  // cannot add book twice, result should be false
-  Result = Libs.addBook("The Odyssey");
-  assert(!Result);
+   // should generate already in library message and return true
+   bool result = libs.isInLibrary("The Odyssey");
+   assert(result);
 
-  // test remove, result should be true
-  Result = Libs.removeBook("The Odyssey");
-  assert(Result);
+   // cannot add book twice, result should be false
+   result = libs.addBook("The Odyssey");
+   assert(!result);
 
-  Result = Libs.addBook("a");
-  assert(Result);
+   // test remove, result should be true
+   result = libs.removeBook("The Odyssey");
+   assert(result);
 
-  Result = Libs.removeBook("In Search of Lost Time");
-  assert(Result);
+   result = libs.addBook("a");
+   assert(result);
 
-  // not in library, result should be false
-  Result = Libs.isInLibrary("The Odyssey");
-  assert(!Result);
+   result = libs.removeBook("In Search of Lost Time");
+   assert(result);
 
-  Result = Libs.isInLibrary("Don Quixote");
-  assert(Result);
+   // not in library, result should be false
+   result = libs.isInLibrary("The Odyssey");
+   assert(!result);
 
-  Result = Libs.isInLibrary("In Search of Lost Time");
-  assert(!Result);
+   result = libs.isInLibrary("Don Quixote");
+   assert(result);
 
-  // cannot remove twice, result should be false
-  Result = Libs.removeBook("The Odyssey");
-  assert(!Result);
+   result = libs.isInLibrary("In Search of Lost Time");
+   assert(!result);
 
-  Result = Libs.removeBook("Don Quixote");
-  assert(Result);
+   // cannot remove twice, result should be false
+   result = libs.removeBook("The Odyssey");
+   assert(!result);
 
-  Result = Libs.removeBook("In Search of Lost Time");
-  assert(!Result);
+   result = libs.removeBook("Don Quixote");
+   assert(result);
 
-  Result = Libs.removeBook("Ulysses");
-  assert(Result);
+   result = libs.removeBook("In Search of Lost Time");
+   assert(!result);
 
-  Result = Libs.removeBook("a");
-  assert(Result);
+   result = libs.removeBook("Ulysses");
+   assert(result);
 
-  // removed all books ^
+   result = libs.removeBook("a");
+   assert(result);
 
-  cout << "\n";
-  Libs.listAllBooks();
+   result = libs.removeBook("In Search of Lost Time");
+   assert(!result);
+
+   // removed all books ^
+
+   for (int i = 0; i < 100; i++) {
+      libs.addBook(to_string(i));
+   }
+
+   result = libs.addBook("a");
+   assert(!result);  // should not be able to add more
+
+   result = libs.isInLibrary("a");
+   assert(!result);  // should not be in lib
+
+   cout << "\n";
+   cout << libs << endl;
+
+   name = "hello";
+
+   // library name should not be changed if variable has changed
+   assert(libs.getName() == "UWB");
 }
 
 void testAll() {
-  test1();
-  cout << "Successfully completed all tests." << endl;
+   test1();
+   cout << "Successfully completed all tests." << endl;
 }
 
 int main() {
-  testAll();
-  return 0;
+   testAll();
+   return 0;
 }

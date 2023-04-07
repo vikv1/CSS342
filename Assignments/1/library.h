@@ -2,6 +2,17 @@
 // Created by Yusuf Pisan on 3/26/18.
 //
 
+/**
+ * @file library.h
+ * @author Vikrant Verma
+ *
+ * Header file for library class.
+ *
+ * Stores books and has functions to add,
+ * remove, search, and list books.
+ *
+ */
+
 #ifndef ASS1_LIBRARY_H
 #define ASS1_LIBRARY_H
 
@@ -12,54 +23,59 @@ using namespace std;
 
 // Library holds books - can add, remove and list books
 class Library {
+   // display all books in library
+   friend ostream& operator<<(ostream& Out, const Library& Lib);
 
-  // display all books in library
-  friend ostream &operator<<(ostream &Out, const Library &Lib);
+ public:
+   // constructor with default name
+   explicit Library();
 
-  // max number of books in library
-  const int MAX = 100;
+   // constructor with passed name
+   explicit Library(const string& Name);
 
+   // destructor
+   virtual ~Library();
 
-public:
-  // constructor with default name
-  explicit Library();
+   // add a new book
+   // return true if successful, false if
+   // book already in library
+   bool addBook(const string& BookName);
 
-  // constructor with passed name
-  explicit Library(const string &Name);
+   // remove a book
+   // return true if successfully removed
+   // false if book not in library
+   bool removeBook(const string& BookName);
 
-  // destructor
-  virtual ~Library();
+   // list all books
+   void listAllBooks() const;
 
-  // add a new book
-  // return true if successful, false if
-  // book already in library
-  bool addBook(const string &BookName);
+   // true if book found in library
+   bool isInLibrary(const string& BookName) const;
 
-  // remove a book
-  // return true if successfully removed
-  // false if book not in library
-  bool removeBook(const string &BookName);
+   // return current library name
+   string getName() const;
 
-  // list all books
-  void listAllBooks() const;
+   // return number of books in library
+   int getNumOfBooks() const;
 
-  // true if book found in library
-  bool isInLibrary(const string &BookName) const;
+   // set new library name
+   void setName(string name);
 
-  // return current library name
-  string getName();
+ private:
+   // max number of books in library
+   static const int MAX = 100;
 
-  // set new library name
-  void setName(string name);
+   // private helper function, finds the index of a book in library
+   int findBook(const string& name) const;
 
-private:
-  int findBook(const string &name) const;
+   // number of current books in library
+   int numOfBooks;
 
-  int numOfBooks;
+   // array to hold books set to size 100
+   string arr[MAX];
 
-  string arr[MAX];
-
-  string name;
+   // library name
+   string name;
 };
 
-#endif // ASS1_LIBRARY_H
+#endif  // ASS1_LIBRARY_H
