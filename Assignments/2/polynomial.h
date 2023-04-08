@@ -14,16 +14,22 @@ class Polynomial {
 
    int getPower(int size, int index) const;
 
+   int getDegree() const;
+
+   vector<double> removeZeroes(vector<double>& v);
+
    int getElementAt(int index) const;
 
-   void iterateAddSub(int size, const Polynomial& b, std::vector<double>& added, bool add) const;
+   void iterateAddSub(int size, const Polynomial& b, std::vector<double>& added,
+                      bool add) const;
 
-   Polynomial startAddSub(const Polynomial& other, bool add) const;
+   Polynomial addSub(const Polynomial& other, bool add) const;
+
+   bool isEqual(const Polynomial& other) const;
 
    vector<double> getVector() const;
 
    vector<double> merge(const vector<double>& p, vector<double>& added) const;
-
 
  public:
    // constructor that takes a vector of coefficients
@@ -45,6 +51,14 @@ class Polynomial {
 
    // check if not equal
    bool operator!=(const Polynomial& other) const;
+
+   bool operator<(const Polynomial& other) const;
+
+   bool operator<=(const Polynomial& other) const;
+
+   bool operator>(const Polynomial& other) const;
+
+   bool operator>=(const Polynomial& other) const;
 
    // gets size of the polynomial
    int getSize() const;
