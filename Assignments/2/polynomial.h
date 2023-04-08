@@ -8,6 +8,7 @@ using namespace std;
 
 class Polynomial {
    friend ostream& operator<<(ostream& out, const Polynomial& other);
+   friend istream& operator>>(istream& in, const Polynomial& other);
 
  private:
    std::vector<double> coeffs;  // coefficients of the polynomial
@@ -33,12 +34,16 @@ class Polynomial {
 
  public:
    // constructor that takes a vector of coefficients
-   Polynomial(const std::vector<double>& c);
+   explicit Polynomial(const std::vector<double>& c);
+
+   Polynomial();
 
    ~Polynomial();
 
    // addition operator
    Polynomial operator+(const Polynomial& other) const;
+
+   Polynomial& operator+=(const Polynomial& other);
 
    // subtraction operator
    Polynomial operator-(const Polynomial& other) const;
