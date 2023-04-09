@@ -8,7 +8,7 @@ using namespace std;
 
 class Polynomial {
    friend ostream& operator<<(ostream& out, const Polynomial& other);
-   friend istream& operator>>(istream& in, const Polynomial& other);
+   friend istream& operator>>(istream& in, Polynomial& other);
 
  private:
    std::vector<double> coeffs;  // coefficients of the polynomial
@@ -17,9 +17,11 @@ class Polynomial {
 
    int getDegree() const;
 
-   vector<double> removeZeroes(vector<double>& v);
+   vector<double>& removeZeroes(vector<double>& v);
 
    int getElementAt(int index) const;
+
+   void inverse(vector<double>& v) const;
 
    void iterateAddSub(int size, const Polynomial& b, std::vector<double>& added,
                       bool add) const;
@@ -47,6 +49,8 @@ class Polynomial {
 
    // subtraction operator
    Polynomial operator-(const Polynomial& other) const;
+
+   Polynomial& operator-=(const Polynomial& other);
 
    // multiplication operator
    Polynomial operator*(const Polynomial& other) const;

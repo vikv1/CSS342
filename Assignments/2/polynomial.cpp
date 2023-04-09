@@ -9,7 +9,7 @@ using namespace std;
 
 Polynomial::Polynomial(const vector<double>& coefficients) {
    coeffs = coefficients;
-   coeffs = removeZeroes(coeffs);
+   removeZeroes(coeffs);
 }
 
 Polynomial::Polynomial() {
@@ -19,16 +19,16 @@ Polynomial::Polynomial() {
 
 Polynomial::~Polynomial() {}
 
-vector<double> Polynomial::removeZeroes(vector<double>& v) {
-   for (int i = 0; i < v.size() && v.size() != 1; i++) {
-      if (v[i] == 0) {
-         v.erase(v.begin() + i);
-      }
-
+vector<double>& Polynomial::removeZeroes(vector<double>& v) {
+   int index = 0;
+   for (int i = 0; i < v.size(); i++) {
       if (v[i] != 0) {
+         index = i;
          break;
       }
    }
+
+   v.erase(v.begin(), v.begin() + index);
 
    return v;
 }
@@ -57,6 +57,12 @@ int Polynomial::getElementAt(int index) const {
 
 vector<double> Polynomial::getVector() const {
    return coeffs;
+}
+
+void Polynomial::inverse(vector<double>& v) const {
+   for (int i = 0; i < v.size(); i++) {
+      v[i] = -v[i];
+   }
 }
 
 /**
@@ -112,10 +118,15 @@ Polynomial Polynomial::addSub(const Polynomial& p, bool add) const {
 
    if (thisSize >= otherSize) {
       iterateAddSub(otherSize, p, result, add);
-      merge(getVector(), result);
+      vector<double> temp = getVector();
+      merge(temp, result);
    } else {
       iterateAddSub(thisSize, p, result, add);
-      merge(p.getVector(), result);
+      vector<double> temp = p.getVector();
+      if (!add) {
+         inverse(temp);
+      }
+      merge(temp, result);
    }
 
    return Polynomial(result);
@@ -147,9 +158,9 @@ vector<double> Polynomial::merge(const vector<double>& p,
    int addedSize = added.size();
    // i <= (getSize() - getDegree());
 
-   for (int i = 0; i < (getSize() - addedSize) ;i++) {  // append unadded powers
+   // overall size - added size gives bound of untouched parts of the vector
+   for (int i = 0; i < (p.size() - addedSize); i++) {  // append unadded powers
       temp.push_back(p.at(i));
-      cout << p.at(i) << endl;
    }
 
    for (int i = 0; i < addedSize; i++) {  // append added powers
@@ -200,6 +211,14 @@ Polynomial Polynomial::operator-(const Polynomial& p) const {
 
    return addSub(p, false);
 }
+
+Polynomial& Polynomial::operator-=(const Polynomial& other) {
+   *this = *this - other;
+
+   return *this;
+}
+
+
 
 /**
  * Helper function for the == operator.
@@ -279,13 +298,15 @@ ostream& operator<<(ostream& out, const Polynomial& other) {
       return out << s;
    }
 
-   for (int i = 0; i < size; i++) {
-      int curr = other.getElementAt(i);
-
-      // skip iteration if first element coefficient is zero
-      if (i == 0 && curr == 0) {
+   for (int i = -1; i < size; i++) {
+      if (i == -1) {
+         if (other.getElementAt(0) < 0) {
+            s += "-";
+         }
          continue;
       }
+
+      int curr = other.getElementAt(i);
 
       // if current element is 0 and not last
       if (curr == 0 && i != size - 1) {
@@ -302,15 +323,10 @@ ostream& operator<<(ostream& out, const Polynomial& other) {
          continue;
       }
 
-      // if last element
-      if (i == size - 1) {
-         // if last is 0, just add the closing bracket
-         if (curr == 0) {
-            s += "]";
-         } else {  // add value and closing bracket
-            s += to_string(curr) + "]";
+      if (i == -1) {
+         if (other.getElementAt(i + 1) < 0) {
+            s += "-";
          }
-
          continue;
       }
 
@@ -319,27 +335,51 @@ ostream& operator<<(ostream& out, const Polynomial& other) {
 
       // size - 2 because size - 1 would be x^1 which can
       // be written as x
+
       if (i < size - 2) {
          // if next ele is 0, dont add operator + or - yet
          if (other.getElementAt(i + 1) == 0) {
-            s += to_string(curr) + "x^" + to_string(other.getPower(size, i));
+            s += ((abs(curr) == 1) ? "" : to_string(abs(curr))) + "x^" +
+                 to_string(other.getPower(size, i));
          } else if (other.getElementAt(i + 1) < 0) {
-            s += to_string(curr) + "x^" + to_string(other.getPower(size, i)) +
-                 " - ";
+            s += ((abs(curr) == 1) ? "" : to_string(abs(curr))) + "x^" +
+                 to_string(other.getPower(size, i)) + " - ";
          } else {
-            s += to_string(abs(curr)) + "x^" +
+            s += ((abs(curr) == 1) ? "" : to_string(abs(curr))) + "x^" +
                  to_string(other.getPower(size, i)) + " + ";
          }
-      } else if (i == size - 2) {  // size - 2 is x^1
+      } else if (i == size - 2) {
+         // size - 2 is x^1
+
          if (other.getElementAt(i + 1) == 0) {
-            s += to_string(abs(curr)) + "x";
+            s += ((abs(curr) == 1) ? "" : to_string(abs(curr))) + "x";
          } else if (other.getElementAt(i + 1) < 0) {
-            s += to_string(abs(curr)) + "x - ";
+            s += ((abs(curr) == 1) ? "" : to_string(abs(curr))) + "x - ";
          } else {
-            s += to_string(abs(curr)) + "x + ";
+            s += ((abs(curr) == 1) ? "" : to_string(abs(curr))) + "x + ";
+         }
+      } else {
+         // last element, x^0
+         // if last is 0, just add the closing bracket
+         if (curr == 0) {
+            s += "]";
+         } else {  // add value and closing bracket
+            s += to_string(abs(curr)) + "]";
          }
       }
    }
 
    return out << s;
+}
+
+istream& operator>>(istream& in, Polynomial& other) {
+   vector<double> v;
+   int input;
+   while ((in >> input)) {
+      v.push_back(input);
+   }
+
+   other = Polynomial(v);
+
+   return in;
 }
