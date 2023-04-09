@@ -1,5 +1,6 @@
 #include <cassert>
 #include <iostream>
+#include <type_traits>
 
 #include "polynomial.h"
 
@@ -66,6 +67,33 @@ int main() {
    // p2 -= p1;
 
    // cout << p2 << endl;
+
+   // cout << endl;
+
+   // x = {2, 1};
+   // y = {3, 2};
+
+   // {2, 1} {3, 2}
+   // 6x^2 + 4x + 3x + 2
+
+   Polynomial p1(x);
+   Polynomial p2(y);
+
+   Polynomial r = p2 * p1;
+   
+   cout << p1 << endl;
+   cout << p1.getDegree() << endl;
+   cout << endl;
+
+   cout << p2 << endl;
+   cout << p2.getDegree() << endl;
+   cout << endl;
+
+   // p1 *= p2;
+   cout << r << endl;
+   p1 *= p2;
+
+   assert(p1 == r);
 
    return 0;
 }

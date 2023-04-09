@@ -39,7 +39,7 @@ int Polynomial::getPower(int size, int index) const {
 
 int Polynomial::getDegree() const {
    for (int i = 0; i < getSize(); i++) {
-      if (coeffs[i] > 0) {
+      if (coeffs[i] != 0) {
          return getPower(getSize(), i);
       }
    }
@@ -173,18 +173,6 @@ vector<double> Polynomial::merge(const vector<double>& p,
 }
 
 Polynomial Polynomial::operator+(const Polynomial& p) const {
-   // vector<double> added;
-   // int thisSize = getSize();
-   // int otherSize = p.getSize();
-
-   // if(thisSize >= otherSize) {
-   //    iterateAddSub(otherSize, p, added, true);
-   //    merge(getVector(), added);
-   // } else {
-   //    iterateAddSub(thisSize, p, added, true);
-   //    merge(p.getVector(), added);
-   // }
-
    return addSub(p, true);
 }
 
@@ -195,20 +183,6 @@ Polynomial& Polynomial::operator+=(const Polynomial& other) {
 }
 
 Polynomial Polynomial::operator-(const Polynomial& p) const {
-   // vector<double> subbed;
-   // int thisSize = getSize();
-   // int otherSize = p.getSize();
-
-   // if(thisSize >= otherSize) {
-   //    iterateAddSub(otherSize, p, subbed, false);
-   //    merge(getVector(), subbed);
-   // } else {
-   //    iterateAddSub(thisSize, p, subbed, false);
-   //    merge(p.getVector(), subbed);
-   // }
-
-   // Polynomial(subbed);
-
    return addSub(p, false);
 }
 
@@ -218,7 +192,38 @@ Polynomial& Polynomial::operator-=(const Polynomial& other) {
    return *this;
 }
 
+Polynomial Polynomial::operator*(const Polynomial& p) const {
+   Polynomial result;
+   int newDegree = getDegree() + p.getDegree();
+   double arr[newDegree + 1];
 
+   //for each element, multiply by every other element in
+   // other polynomial
+   for(int i = 0; i < getSize(); i++) {
+      for(int j = 0; j < p.getSize(); j++) {
+         int thisPower = getPower(getSize(), i);
+         int otherPower = p.getPower(p.getSize(), j);
+
+         // powers added when multiplied
+         int degree = thisPower + otherPower;    
+
+         // add onto existing element to avoid overwriting previous element
+         arr[newDegree - degree] = arr[newDegree - degree] + (getElementAt(i) * p.getElementAt(j));
+      }
+   }
+
+   vector<double> v(arr, arr + newDegree + 1); 
+
+   result = Polynomial(v);
+
+   return result;
+}
+
+Polynomial& Polynomial::operator*=(const Polynomial& other) {
+   *this = *this * other;
+
+   return *this;
+}
 
 /**
  * Helper function for the == operator.

@@ -15,7 +15,7 @@ class Polynomial {
 
    int getPower(int size, int index) const;
 
-   int getDegree() const;
+   
 
    vector<double>& removeZeroes(vector<double>& v);
 
@@ -38,6 +38,8 @@ class Polynomial {
    // constructor that takes a vector of coefficients
    explicit Polynomial(const std::vector<double>& c);
 
+   int getDegree() const;
+
    Polynomial();
 
    ~Polynomial();
@@ -54,6 +56,8 @@ class Polynomial {
 
    // multiplication operator
    Polynomial operator*(const Polynomial& other) const;
+
+   Polynomial& operator*=(const Polynomial& other);
 
    // check equality
    bool operator==(const Polynomial& other) const;
