@@ -10,6 +10,15 @@ using namespace std;
 Polynomial::Polynomial(const vector<double>& coefficients) {
    coeffs = coefficients;
    removeZeroes(coeffs);
+   /* Example: {0, 2, 0}
+    * == 0x^2 + 2x + 0
+    * which is just 2x + 0.
+    *
+    * Only delete leading zeroes
+    * because the zeroes in between
+    * and to the right of the vector
+    * are used to determine the powers.
+    */
 }
 
 Polynomial::Polynomial() {
@@ -38,13 +47,7 @@ int Polynomial::getPower(int size, int index) const {
 }
 
 int Polynomial::getDegree() const {
-   for (int i = 0; i < getSize(); i++) {
-      if (coeffs[i] != 0) {
-         return getPower(getSize(), i);
-      }
-   }
-
-   return 0;
+   return getPower(getSize(), 0);
 }
 
 int Polynomial::getSize() const {
@@ -63,6 +66,14 @@ void Polynomial::inverse(vector<double>& v) const {
    for (int i = 0; i < v.size(); i++) {
       v[i] = -v[i];
    }
+}
+
+bool Polynomial::isEmpty() const {
+   return (getElementAt(0) == 0);
+}
+
+int Polynomial::getLead() const {
+   return (getElementAt(0));
 }
 
 /**
@@ -148,28 +159,27 @@ Polynomial Polynomial::addSub(const Polynomial& p, bool add) const {
  *
  *
  * @param p - The bigger of the two initial polynomials
- * @param added - The result of adding what was possible
+ * @param processed - The result of operating on what was possible
  * @return vector<double>
  */
 vector<double> Polynomial::merge(const vector<double>& p,
-                                 vector<double>& added) const {
+                                 vector<double>& processed) const {
    // use temp because there is no push_front() for vectors
    vector<double> temp;
-   int addedSize = added.size();
-   // i <= (getSize() - getDegree());
+   int addedSize = processed.size();
 
-   // overall size - added size gives bound of untouched parts of the vector
+   // overall size - added size gives bound of unprocessed parts of the vector
    for (int i = 0; i < (p.size() - addedSize); i++) {  // append unadded powers
       temp.push_back(p.at(i));
    }
 
    for (int i = 0; i < addedSize; i++) {  // append added powers
-      temp.push_back(added.at(i));
+      temp.push_back(processed.at(i));
    }
 
-   added = temp;
+   processed = temp;
 
-   return added;
+   return processed;
 }
 
 Polynomial Polynomial::operator+(const Polynomial& p) const {
@@ -197,22 +207,24 @@ Polynomial Polynomial::operator*(const Polynomial& p) const {
    int newDegree = getDegree() + p.getDegree();
    double arr[newDegree + 1];
 
-   //for each element, multiply by every other element in
+   // for each element, multiply by every other element in
    // other polynomial
-   for(int i = 0; i < getSize(); i++) {
-      for(int j = 0; j < p.getSize(); j++) {
+   // is basically FOIL method but in order
+   for (int i = 0; i < getSize(); i++) {
+      for (int j = 0; j < p.getSize(); j++) {
          int thisPower = getPower(getSize(), i);
          int otherPower = p.getPower(p.getSize(), j);
 
          // powers added when multiplied
-         int degree = thisPower + otherPower;    
+         int degree = thisPower + otherPower;
 
          // add onto existing element to avoid overwriting previous element
-         arr[newDegree - degree] = arr[newDegree - degree] + (getElementAt(i) * p.getElementAt(j));
+         arr[newDegree - degree] =
+            arr[newDegree - degree] + (getElementAt(i) * p.getElementAt(j));
       }
    }
 
-   vector<double> v(arr, arr + newDegree + 1); 
+   vector<double> v(arr, arr + newDegree + 1);
 
    result = Polynomial(v);
 
@@ -239,6 +251,7 @@ bool Polynomial::isEqual(const Polynomial& p) const {
    if (degree != p.getDegree()) {
       return false;
    } else {
+      // sizes are guaranteed to be equal if degrees are same
       for (int i = 0; i < getSize(); i++) {
          if (getElementAt(i) != p.getElementAt(i)) {
             return false;
@@ -291,6 +304,90 @@ bool Polynomial::operator>(const Polynomial& p) const {
 
 bool Polynomial::operator>=(const Polynomial& p) const {
    return !(*this < p);
+}
+
+string Polynomial::toString(Polynomial& other) const {
+   string s = "[";
+   int size = other.getSize();
+
+   // if polynomial degree is 0
+   if (size == 1) {
+      s += to_string(other.getElementAt(0)) + "]";
+      return s;
+   }
+
+   for (int i = -1; i < size; i++) {
+      if (i == -1) {
+         if (other.getElementAt(0) < 0) {
+            s += "-";
+         }
+         continue;
+      }
+
+      int curr = other.getElementAt(i);
+
+      // if current element is 0 and not last
+      if (curr == 0 && i != size - 1) {
+         // if string already has a number in it and next isnt 0, add a + to get
+         // ready for next element
+         if (other.getElementAt(i + 1) != 0 && s.length() > 1) {
+            if (other.getElementAt(i + 1) < 0) {
+               s += " - ";
+            } else {
+               s += " + ";
+            }
+         }
+
+         continue;
+      }
+
+      if (i == -1) {
+         if (other.getElementAt(i + 1) < 0) {
+            s += "-";
+         }
+         continue;
+      }
+
+      // using absolute values because minus signs are pre appended before
+      // actually reaching the negative element
+
+      // size - 2 because size - 1 would be x^1 which can
+      // be written as x
+
+      if (i < size - 2) {
+         // if next ele is 0, dont add operator + or - yet
+         if (other.getElementAt(i + 1) == 0) {
+            s += ((abs(curr) == 1) ? "" : to_string(abs(curr))) + "x^" +
+                 to_string(other.getPower(size, i));
+         } else if (other.getElementAt(i + 1) < 0) {
+            s += ((abs(curr) == 1) ? "" : to_string(abs(curr))) + "x^" +
+                 to_string(other.getPower(size, i)) + " - ";
+         } else {
+            s += ((abs(curr) == 1) ? "" : to_string(abs(curr))) + "x^" +
+                 to_string(other.getPower(size, i)) + " + ";
+         }
+      } else if (i == size - 2) {
+         // size - 2 is x^1
+
+         if (other.getElementAt(i + 1) == 0) {
+            s += ((abs(curr) == 1) ? "" : to_string(abs(curr))) + "x";
+         } else if (other.getElementAt(i + 1) < 0) {
+            s += ((abs(curr) == 1) ? "" : to_string(abs(curr))) + "x - ";
+         } else {
+            s += ((abs(curr) == 1) ? "" : to_string(abs(curr))) + "x + ";
+         }
+      } else {
+         // last element, x^0
+         // if last is 0, just add the closing bracket
+         if (curr == 0) {
+            s += "]";
+         } else {  // add value and closing bracket
+            s += to_string(abs(curr)) + "]";
+         }
+      }
+   }
+
+   return s;
 }
 
 ostream& operator<<(ostream& out, const Polynomial& other) {
