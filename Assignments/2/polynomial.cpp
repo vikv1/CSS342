@@ -219,8 +219,7 @@ Polynomial Polynomial::operator*(const Polynomial& p) const {
          int degree = thisPower + otherPower;
 
          // add onto existing element to avoid overwriting previous element
-         arr[newDegree - degree] =
-            arr[newDegree - degree] + (getElementAt(i) * p.getElementAt(j));
+         arr[newDegree - degree] += (getElementAt(i) * p.getElementAt(j));
       }
    }
 

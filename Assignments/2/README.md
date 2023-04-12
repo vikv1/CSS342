@@ -1,5 +1,5 @@
-Vikrant Verma
-CSS 342
+# Vikrant Verma
+## CSS 342
 
 - I removed the "*" check because it was running every single check possible
   which includes checks to conform to the LLVM standard which I don't like
