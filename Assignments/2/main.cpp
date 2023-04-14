@@ -1,6 +1,9 @@
 #include <cassert>
 #include <iostream>
 #include <type_traits>
+#include <sstream>
+#include <string>
+
 
 #include "polynomial.h"
 
@@ -22,10 +25,10 @@ int main() {
    Polynomial t4 = t1 * t2;       // (x^2 + 2x + 3) * (4x^2 + 5x + 6)
    cout << "t4: " << t4 << endl;  // output: 4x^4 + 13x^3 + 28x^2 + 27x + 18
 
-   assert(t1.toString(t1) == "[x^2 + 2x + 3]");
-   assert(t2.toString(t2) == "[4x^2 + 5x + 6]");
-   assert(t3.toString(t3) == "[5x^2 + 7x + 9]");
-   assert(t4.toString(t4) == "[4x^4 + 13x^3 + 28x^2 + 27x + 18]");
+   assert(t1.toString() == "[x^2 + 2x + 3]");
+   assert(t2.toString() == "[4x^2 + 5x + 6]");
+   assert(t3.toString() == "[5x^2 + 7x + 9]");
+   assert(t4.toString() == "[4x^4 + 13x^3 + 28x^2 + 27x + 18]");
 
    cout << "end assignment tests" << endl;
    cout << "start big tests" << endl;
@@ -54,13 +57,13 @@ int main() {
    //////////////////////////////////////////////
    Polynomial res = p1 + p2;
 
-   assert(res.toString(res) ==
+   assert(res.toString() ==
           "[-2x^16 + 2x^15 - 4x^14 + 600x^13 + 3x^11 + 4x^10 + 7x^9 + 10x^8 + "
           "107x^7 + 106x^6 + 9x^5 + 2x^4 + 24x^3 + 30x^2 + 304x]");
 
    res = p2 + p1;
 
-   assert(res.toString(res) ==
+   assert(res.toString() ==
           "[-2x^16 + 2x^15 - 4x^14 + 600x^13 + 3x^11 + 4x^10 + 7x^9 + 10x^8 + "
           "107x^7 + 106x^6 + 9x^5 + 2x^4 + 24x^3 + 30x^2 + 304x]");
 
@@ -71,7 +74,7 @@ int main() {
    Polynomial t = p1;
    p1 += p2;
 
-   assert(p1.toString(p1) ==
+   assert(p1.toString() ==
           "[-2x^16 + 2x^15 - 4x^14 + 600x^13 + 3x^11 + 4x^10 + 7x^9 + 10x^8 + "
           "107x^7 + 106x^6 + 9x^5 + 2x^4 + 24x^3 + 30x^2 + 304x]");
 
@@ -80,7 +83,7 @@ int main() {
    t = p2;
    p2 += p1;
 
-   assert(p2.toString(p2) ==
+   assert(p2.toString() ==
           "[-2x^16 + 2x^15 - 4x^14 + 600x^13 + 3x^11 + 4x^10 + 7x^9 + 10x^8 + "
           "107x^7 + 106x^6 + 9x^5 + 2x^4 + 24x^3 + 30x^2 + 304x]");
    p2 = t;
@@ -91,13 +94,13 @@ int main() {
 
    res = p2 - p1;
 
-   assert(res.toString(res) ==
+   assert(res.toString() ==
           "[2x^16 - 2x^15 + 4x^14 - 600x^13 + 3x^11 + 4x^10 + 7x^9 - 10x^8 - "
           "87x^7 + 88x^6 + 9x^5 - 2x^4 - 30x^3 + 24x^2 + 296x]");
 
    res = p1 - p2;
 
-   assert(res.toString(res) ==
+   assert(res.toString() ==
           "[-2x^16 + 2x^15 - 4x^14 + 600x^13 - 3x^11 - 4x^10 - 7x^9 + 10x^8 + "
           "87x^7 - 88x^6 - 9x^5 + 2x^4 + 30x^3 - 24x^2 - 296x]");
 
@@ -108,7 +111,7 @@ int main() {
    t = p1;
    p1 -= p2;
 
-   assert(p1.toString(p1) ==
+   assert(p1.toString() ==
           "[-2x^16 + 2x^15 - 4x^14 + 600x^13 - 3x^11 - 4x^10 - 7x^9 + 10x^8 + "
           "87x^7 - 88x^6 - 9x^5 + 2x^4 + 30x^3 - 24x^2 - 296x]");
 
@@ -117,7 +120,7 @@ int main() {
    t = p2;
    p2 -= p1;
 
-   assert(p2.toString(p2) ==
+   assert(p2.toString() ==
           "[2x^16 - 2x^15 + 4x^14 - 600x^13 + 3x^11 + 4x^10 + 7x^9 - 10x^8 - "
           "87x^7 + 88x^6 + 9x^5 - 2x^4 - 30x^3 + 24x^2 + 296x]");
    p2 = t;
@@ -127,7 +130,7 @@ int main() {
    //////////////////////////////////////////////
    res = p1 * p2;
 
-   assert(res.toString(res) ==
+   assert(res.toString() ==
           "[-6x^27 - 2x^26 - 18x^25 + 1798x^24 + 2352x^23 + 4026x^22 + 136x^21 "
           "+ 5630x^20 + 58200x^19 + 5671x^18 - 49x^17 - 593x^16 + 15169x^15 + "
           "182029x^14 + 9720x^13 + 1959x^12 + 108x^11 + 471x^10 + 8259x^9 + "
@@ -135,7 +138,7 @@ int main() {
 
    res = p2 * p1;
 
-   assert(res.toString(res) ==
+   assert(res.toString() ==
           "[-6x^27 - 2x^26 - 18x^25 + 1798x^24 + 2352x^23 + 4026x^22 + 136x^21 "
           "+ 5630x^20 + 58200x^19 + 5671x^18 - 49x^17 - 593x^16 + 15169x^15 + "
           "182029x^14 + 9720x^13 + 1959x^12 + 108x^11 + 471x^10 + 8259x^9 + "
@@ -147,7 +150,7 @@ int main() {
    t = p1;
    p1 *= p2;
 
-   assert(p1.toString(p1) ==
+   assert(p1.toString() ==
           "[-6x^27 - 2x^26 - 18x^25 + 1798x^24 + 2352x^23 + 4026x^22 + 136x^21 "
           "+ 5630x^20 + 58200x^19 + 5671x^18 - 49x^17 - 593x^16 + 15169x^15 + "
           "182029x^14 + 9720x^13 + 1959x^12 + 108x^11 + 471x^10 + 8259x^9 + "
@@ -158,7 +161,7 @@ int main() {
    t = p2;
    p2 *= p1;
 
-   assert(p2.toString(p2) ==
+   assert(p2.toString() ==
           "[-6x^27 - 2x^26 - 18x^25 + 1798x^24 + 2352x^23 + 4026x^22 + 136x^21 "
           "+ 5630x^20 + 58200x^19 + 5671x^18 - 49x^17 - 593x^16 + 15169x^15 + "
           "182029x^14 + 9720x^13 + 1959x^12 + 108x^11 + 471x^10 + 8259x^9 + "
@@ -174,10 +177,12 @@ int main() {
    vector<double> u = {0, 2, 1, 3};
    vector<double> v = {0, 0, 0, 2, 1, 3};
    vector<double> w = {0, 0, 0, 2, 1, 3, 0};
+   vector<double> z = {0, 0, 0, 2, 1, 3, 1};
 
    Polynomial p3(u);
    Polynomial p4(v);
    Polynomial p5(w);
+   Polynomial p6(z);
 
    // p5 is biggest
    // p3 and p4 are equal
@@ -185,6 +190,7 @@ int main() {
    cout << p3 << endl;
    cout << p4 << endl;
    cout << p5 << endl;
+   cout << p6 << endl;
    cout << "doing equality tests on the above polynomials" << endl;
    cout << endl;
 
@@ -214,6 +220,7 @@ int main() {
 
    assert(p5 > p3);
    assert(p5 > p4);
+   assert(p6 > p5);
 
    /** >= */
    assert((p3 >= p4));
@@ -221,6 +228,7 @@ int main() {
 
    assert(p5 >= p3);
    assert(p5 >= p4);
+   assert(p6 >= p5);
 
    /** < */
    assert(!(p3 < p4));
@@ -232,6 +240,8 @@ int main() {
    assert((p3 < p5));
    assert((p4 < p5));
 
+   assert(p5 < p6);
+
    /** <= */
    assert((p3 <= p4));
    assert((p4 <= p3));
@@ -242,11 +252,21 @@ int main() {
    assert((p3 <= p5));
    assert((p4 <= p5));
 
+   assert(p5 <= p6);
+
    cout << "Passed all equality tests" << endl;
    cout << "Tested: >, >=, <, <=, ==, !=" << endl;
 
    cout << endl;
    cout << "passed all tests" << endl;
+
+
+   // Polynomial p;
+
+   // cin >> p;
+
+   // cout << p << endl;
+
 
    return 0;
 }

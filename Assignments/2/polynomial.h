@@ -15,10 +15,6 @@ class Polynomial {
 
    int getPower(int size, int index) const;
 
-   bool isEmpty() const;
-
-   int getLead() const;
-
    vector<double>& removeZeroes(vector<double>& v);
 
    int getElementAt(int index) const;
@@ -75,7 +71,7 @@ class Polynomial {
 
    bool operator>=(const Polynomial& other) const;
 
-   string toString(Polynomial& other) const;
+   string toString() const;
 
    // gets size of the polynomial
    int getSize() const;
