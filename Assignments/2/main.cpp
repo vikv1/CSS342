@@ -228,7 +228,7 @@ void arithmeticTests(Polynomial& p1, Polynomial& p2) {
 
 
    cout << "Passed all arithmetic tests" << endl;
-   cout << "Tested: +, +=, -, -=, *, *=\n" << endl;
+   cout << "Tested: +, +=, -, -=, *, *=, /, /=\n" << endl;
 }
 
 void equalityTests(Polynomial& p3, Polynomial& p4, Polynomial& p5,
