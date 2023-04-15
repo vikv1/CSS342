@@ -124,6 +124,16 @@ class Polynomial {
    Polynomial& operator*=(const Polynomial& other);
 
    /**
+    * division operator (for quotient)
+    */
+   Polynomial operator/(const Polynomial& other) const;
+
+   /**
+    * division assignment operator
+    */
+   Polynomial& operator/=(const Polynomial& other);
+
+   /**
     * Check if equal
     */
    bool operator==(const Polynomial& other) const;

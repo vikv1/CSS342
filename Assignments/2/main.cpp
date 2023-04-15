@@ -62,6 +62,8 @@ int main() {
 
    // cout << p << endl;
 
+   
+
    return 0;
 }
 
@@ -192,6 +194,38 @@ void arithmeticTests(Polynomial& p1, Polynomial& p2) {
           "29917x^8 + 3109x^7 + 9x^6 + 1320x^5 + 8169x^4 + 1008x^3 + 1200x^2]");
 
    p2 = t;
+
+   ////////////////////////////////////////////////
+   /////       / OF POLYNOMIALS              /////
+   //////////////////////////////////////////////
+   Polynomial p4({2, 3, 5});
+   Polynomial p5({1, 0});
+
+   res = p4 / p5;
+   assert(res.toString() == "[2x + 3]");
+
+   res = p5 / p4;
+   assert(res.toString() == "[x]");
+
+   res = p5 / p5;
+   assert(res.toString() == "[1]");
+
+   ////////////////////////////////////////////////
+   /////       /= OF POLYNOMIALS             /////
+   //////////////////////////////////////////////
+   t = p4;
+   p4 /= p5;
+
+   assert(p4.toString() == "[2x + 3]");
+
+   p4 = t;
+
+   t = p5;
+   p5 /= p4;
+
+   assert(p5.toString() == "[x]");
+
+
 
    cout << "Passed all arithmetic tests" << endl;
    cout << "Tested: +, +=, -, -=, *, *=\n" << endl;

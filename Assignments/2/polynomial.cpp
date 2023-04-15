@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <sstream>
+#include <iostream>
 
 using namespace std;
 
@@ -331,6 +332,58 @@ Polynomial Polynomial::operator*(const Polynomial& p) const {
  */
 Polynomial& Polynomial::operator*=(const Polynomial& other) {
    *this = *this * other;
+
+   return *this;
+}
+
+/**
+ * Divides a bigger polynomial by a smaller one.
+ * Returns the quotient of the two polynomials.
+ * Or returns this if the divisor is bigger or 0.
+
+ * @param other 
+ * @return Polynomial 
+ */
+Polynomial Polynomial::operator/(const Polynomial& other) const {
+   if(other > *this || other.getElementAt(0) == 0) {
+      return *this;
+   } else if(other == *this) {
+      Polynomial r({1});
+      return r;
+   }
+
+   int newDegree = getDegree() - other.getDegree();
+   vector<double> v(newDegree + 1);
+
+   
+   int otherPow = other.getPower(other.getSize(), 0);
+
+   for (int i = 0; i < getSize(); i++) {
+      int thisPow = getPower(getSize(), i);
+      // check if divisor leading element can go into current dividen element
+      if(thisPow >= otherPow) { 
+         double div = getElementAt(i) / other.getElementAt(0);
+         int newPow = thisPow - otherPow;
+         v[newDegree - newPow] += div;
+      }
+   }
+
+   Polynomial result = Polynomial(v);
+
+   return result;
+}
+
+/**
+ * Divides two polynomials using * and assigns it
+ * to the left hand side.
+ * p1 /= 2
+ * is just p1 = p1 / p2
+ *
+ * @param p
+ * @return Polynomial
+ */
+Polynomial& Polynomial::operator/=(const Polynomial& other) {
+   *this = *this / other;
 
    return *this;
 }
