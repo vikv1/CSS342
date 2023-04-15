@@ -53,7 +53,7 @@ Polynomial::~Polynomial() {}
 vector<double>& Polynomial::removeZeroes(vector<double>& v) {
    int index = 0;
    for (int i = 0; i < v.size(); i++) {
-      if (v[i] != 0) {
+      if (v.at(i) != 0) {
          index = i;
          break;
       }
@@ -120,7 +120,7 @@ vector<double> Polynomial::getVector() const {
  */
 void Polynomial::inverse(vector<double>& v) const {
    for (int i = 0; i < v.size(); i++) {
-      v[i] = -v[i];
+      v.at(i) = -v.at(i);
    }
 }
 
@@ -312,7 +312,7 @@ Polynomial Polynomial::operator*(const Polynomial& p) const {
          int degree = thisPower + otherPower;
 
          // add onto existing element to avoid overwriting previous element
-         v[newDegree - degree] += (getElementAt(i) * p.getElementAt(j));
+         v.at(newDegree - degree) += (getElementAt(i) * p.getElementAt(j));
       }
    }
 
@@ -364,7 +364,7 @@ Polynomial Polynomial::operator/(const Polynomial& other) const {
       if(thisPow >= otherPow) { 
          double div = getElementAt(i) / other.getElementAt(0);
          int newPow = thisPow - otherPow;
-         v[newDegree - newPow] += div;
+         v.at(newDegree - newPow) += div;
       }
    }
 
