@@ -212,6 +212,10 @@ Polynomial Polynomial::addSub(const Polynomial& p, bool add) const {
  * the unadded higher powers and then append the added lower ones.
  *
  *
+ * Precondition: processed vector already has sums/differences
+ * Postcondition: processed vector and unoperable powers are merged 
+ *
+ *
  * @param p - The bigger of the two initial polynomials
  * @param processed - The result of operating on what was possible
  * @return vector<double>
