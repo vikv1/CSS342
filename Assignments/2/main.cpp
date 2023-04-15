@@ -1,16 +1,14 @@
 #include <cassert>
 #include <iostream>
-#include <type_traits>
-#include <sstream>
-#include <string>
-
 
 #include "polynomial.h"
+
+void arithmeticTests(Polynomial&, Polynomial&);
+void equalityTests(Polynomial&, Polynomial&, Polynomial&, Polynomial&);
 
 int main() {
    /**
     * Tests from assignment page
-    *
     */
 
    Polynomial t1({1, 2, 3});  // x^2 + 2x + 3
@@ -42,6 +40,32 @@ int main() {
    Polynomial p1(x);
    Polynomial p2(y);
 
+   /** @attention ARITHMETIC TESTS */
+   arithmeticTests(p1, p2);
+
+   Polynomial p3({0, 2, 1, 3});
+   Polynomial p4({0, 0, 0, 2, 1, 3});
+   Polynomial p5({0, 0, 0, 2, 1, 3, 0});
+   Polynomial p6({0, 0, 0, 2, 1, 3, 1});
+   // p6 is biggest
+   // p3 and p4 are equal
+
+   /** @attention EQUALITY TESTS  */
+   equalityTests(p3, p4, p5, p6);
+
+   cout << endl;
+   cout << "passed all tests" << endl;
+
+   // Polynomial p;
+
+   // cin >> p;
+
+   // cout << p << endl;
+
+   return 0;
+}
+
+void arithmeticTests(Polynomial& p1, Polynomial& p2) {
    cout << p1 << endl;
    cout << p2 << endl;
    cout << "Doing arithmetic tests on the above polynomials" << endl;
@@ -171,22 +195,10 @@ int main() {
 
    cout << "Passed all arithmetic tests" << endl;
    cout << "Tested: +, +=, -, -=, *, *=\n" << endl;
+}
 
-   /** @attention EQUALITY TESTS  */
-
-   vector<double> u = {0, 2, 1, 3};
-   vector<double> v = {0, 0, 0, 2, 1, 3};
-   vector<double> w = {0, 0, 0, 2, 1, 3, 0};
-   vector<double> z = {0, 0, 0, 2, 1, 3, 1};
-
-   Polynomial p3(u);
-   Polynomial p4(v);
-   Polynomial p5(w);
-   Polynomial p6(z);
-
-   // p5 is biggest
-   // p3 and p4 are equal
-
+void equalityTests(Polynomial& p3, Polynomial& p4, Polynomial& p5,
+                   Polynomial& p6) {
    cout << p3 << endl;
    cout << p4 << endl;
    cout << p5 << endl;
@@ -256,17 +268,4 @@ int main() {
 
    cout << "Passed all equality tests" << endl;
    cout << "Tested: >, >=, <, <=, ==, !=" << endl;
-
-   cout << endl;
-   cout << "passed all tests" << endl;
-
-
-   // Polynomial p;
-
-   // cin >> p;
-
-   // cout << p << endl;
-
-
-   return 0;
 }

@@ -1,14 +1,22 @@
 #include "polynomial.h"
 
 #include <algorithm>
-#include <cstdlib>
-#include <iostream>
-#include <type_traits>
-#include <vector>
 #include <sstream>
-#include <string>
 
 using namespace std;
+
+/**
+ * Polynomial class implemention of the header file.
+ *
+ * Performs various operations on vectors in order
+ * to perform arithmetic, comparisons, and input/output.
+ */
+
+/**
+ * Constructor with vector of coefficients
+ *
+ * @param coefficients
+ */
 
 Polynomial::Polynomial(const vector<double>& coefficients) {
    coeffs = coefficients;
@@ -24,6 +32,10 @@ Polynomial::Polynomial(const vector<double>& coefficients) {
     */
 }
 
+/**
+ * Default constructor
+ *
+ */
 Polynomial::Polynomial() {
    vector<double> coefficients = {0};
    coeffs = coefficients;
@@ -33,9 +45,9 @@ Polynomial::~Polynomial() {}
 
 /**
  * Deletes leading zeroes from the vector in constructor
- * 
- * @param v 
- * @return vector<double>& 
+ *
+ * @param v
+ * @return vector<double>&
  */
 vector<double>& Polynomial::removeZeroes(vector<double>& v) {
    int index = 0;
@@ -52,12 +64,12 @@ vector<double>& Polynomial::removeZeroes(vector<double>& v) {
 }
 
 /**
- * Returns the power of a number in the 
+ * Returns the power of a number in the
  * vector representation of the polynomial.
- * 
- * @param size 
- * @param index 
- * @return int 
+ *
+ * @param size
+ * @param index
+ * @return int
  */
 int Polynomial::getPower(int size, int index) const {
    return size - index - 1;
@@ -65,8 +77,8 @@ int Polynomial::getPower(int size, int index) const {
 
 /**
  * Returns highest power of the polynomial
- * 
- * @return int 
+ *
+ * @return int
  */
 int Polynomial::getDegree() const {
    return getPower(getSize(), 0);
@@ -74,8 +86,8 @@ int Polynomial::getDegree() const {
 
 /**
  * Size of underlying vector
- * 
- * @return int 
+ *
+ * @return int
  */
 int Polynomial::getSize() const {
    return coeffs.size();
@@ -83,9 +95,9 @@ int Polynomial::getSize() const {
 
 /**
  * Gets an element at an index from the vector
- * 
- * @param index 
- * @return int 
+ *
+ * @param index
+ * @return int
  */
 int Polynomial::getElementAt(int index) const {
    return coeffs.at(index);
@@ -93,8 +105,8 @@ int Polynomial::getElementAt(int index) const {
 
 /**
  * Returns the vector.
- * 
- * @return vector<double> 
+ *
+ * @return vector<double>
  */
 vector<double> Polynomial::getVector() const {
    return coeffs;
@@ -102,8 +114,8 @@ vector<double> Polynomial::getVector() const {
 
 /**
  * Inverses elements, used for subtraction
- * 
- * @param v 
+ *
+ * @param v
  */
 void Polynomial::inverse(vector<double>& v) const {
    for (int i = 0; i < v.size(); i++) {
@@ -128,8 +140,6 @@ void Polynomial::iterateAddSub(int smallerSize, const Polynomial& b,
    int thisSize = getSize();
    int bSize = b.getSize();
 
-
-
    int count = 0;
    int margin = 1;
 
@@ -148,13 +158,16 @@ void Polynomial::iterateAddSub(int smallerSize, const Polynomial& b,
       margin++;
    }
 
+   // reverse because we were pushing_back smaller to bigger elements
    reverse(added.begin(), added.end());
 }
 
 /**
  * Adds or subtracts polynomials using the iterateAddSub method.
  *
- * 
+ * Uses the merge function to merge the added/subtracted part
+ * and the unadded/unsubtracted part.
+ *
  * @param p
  * @param add
  * @return Polynomial
@@ -173,9 +186,10 @@ Polynomial Polynomial::addSub(const Polynomial& p, bool add) const {
       iterateAddSub(thisSize, p, result, add);
       vector<double> temp = p.getVector();
       if (!add) {
-         // if substracting bigger from smaller, remaining terms will be negative
-         // so inverse it
-         inverse(temp); 
+         // if this is smaller and we are subtracting,
+         // the other polynomial will be inversed
+         // e.g  1 - 2 == 1 + (-2)
+         inverse(temp);
       }
       merge(temp, result);
    }
@@ -193,7 +207,7 @@ Polynomial Polynomial::addSub(const Polynomial& p, bool add) const {
  *
  * Example: merge {1, 2, 3, 4} and {1, 2} = {1, 2, 1, 2}
  * The second vector in this case is the result of adding/subbing
- * the like powers from two polynomials, so we just have to first append 
+ * the like powers from two polynomials, so we just have to first append
  * the unadded higher powers and then append the added lower ones.
  *
  *
@@ -208,11 +222,11 @@ vector<double> Polynomial::merge(const vector<double>& p,
    int addedSize = processed.size();
 
    // overall size - added size gives bound of unprocessed parts of the vector
-   for (int i = 0; i < (p.size() - addedSize); i++) {  // append unadded powers
+   for (int i = 0; i < (p.size() - addedSize); i++) {  // append unprocessed
       temp.push_back(p.at(i));
    }
 
-   for (int i = 0; i < addedSize; i++) {  // append added powers
+   for (int i = 0; i < addedSize; i++) {  // append processed
       temp.push_back(processed.at(i));
    }
 
@@ -223,22 +237,22 @@ vector<double> Polynomial::merge(const vector<double>& p,
 
 /**
  * Adds two polynomials using +.
- * 
- * @param p 
- * @return Polynomial 
+ *
+ * @param p
+ * @return Polynomial
  */
 Polynomial Polynomial::operator+(const Polynomial& p) const {
    return addSub(p, true);
 }
 
 /**
- * Adds two polynomials using + and assigns it 
+ * Adds two polynomials using + and assigns it
  * to the left hand side.
  * p1 += 2
  * is just p1 = p1 + p2
- * 
- * @param p 
- * @return Polynomial 
+ *
+ * @param p
+ * @return Polynomial
  */
 Polynomial& Polynomial::operator+=(const Polynomial& other) {
    *this = *this + other;
@@ -248,22 +262,22 @@ Polynomial& Polynomial::operator+=(const Polynomial& other) {
 
 /**
  * Subtracts two polynomials using -.
- * 
- * @param p 
- * @return Polynomial 
+ *
+ * @param p
+ * @return Polynomial
  */
 Polynomial Polynomial::operator-(const Polynomial& p) const {
    return addSub(p, false);
 }
 
 /**
- * Subtracts two polynomials using - and assigns it 
+ * Subtracts two polynomials using - and assigns it
  * to the left hand side.
  * p1 -= 2
  * is just p1 = p1 - p2
- * 
- * @param p 
- * @return Polynomial 
+ *
+ * @param p
+ * @return Polynomial
  */
 Polynomial& Polynomial::operator-=(const Polynomial& other) {
    *this = *this - other;
@@ -275,22 +289,19 @@ Polynomial& Polynomial::operator-=(const Polynomial& other) {
  * Multiplies all terms in the left hand polynomial
  * by all terms in the right hand polynomial.
  *
- * Stores in an array where the size is the new degree + 1.
- * 
- * Array is converted to vector at the end and a new polynomial
- * is returned.
+ * Stores in a vector where the size is the new degree + 1.
  *
- * @param p 
- * @return Polynomial 
+ * @param p
+ * @return Polynomial
  */
 Polynomial Polynomial::operator*(const Polynomial& p) const {
    Polynomial result;
    int newDegree = getDegree() + p.getDegree();
-   double arr[newDegree + 1];
+   vector<double> v(newDegree + 1);
 
    // for each element, multiply by every other element in
    // other polynomial
-   // is basically FOIL method but in order
+   // is basically FOIL method but left to right
    for (int i = 0; i < getSize(); i++) {
       for (int j = 0; j < p.getSize(); j++) {
          int thisPower = getPower(getSize(), i);
@@ -300,11 +311,9 @@ Polynomial Polynomial::operator*(const Polynomial& p) const {
          int degree = thisPower + otherPower;
 
          // add onto existing element to avoid overwriting previous element
-         arr[newDegree - degree] += (getElementAt(i) * p.getElementAt(j));
+         v[newDegree - degree] += (getElementAt(i) * p.getElementAt(j));
       }
    }
-
-   vector<double> v(arr, arr + newDegree + 1);
 
    result = Polynomial(v);
 
@@ -312,13 +321,13 @@ Polynomial Polynomial::operator*(const Polynomial& p) const {
 }
 
 /**
- * Multiplies two polynomials using * and assigns it 
+ * Multiplies two polynomials using * and assigns it
  * to the left hand side.
  * p1 *= 2
  * is just p1 = p1 * p2
- * 
- * @param p 
- * @return Polynomial 
+ *
+ * @param p
+ * @return Polynomial
  */
 Polynomial& Polynomial::operator*=(const Polynomial& other) {
    *this = *this * other;
@@ -327,14 +336,13 @@ Polynomial& Polynomial::operator*=(const Polynomial& other) {
 }
 
 /**
- * Helper function for the == operator.
  * Returns true if the two polynomials are equal, false otherwise.
  *
  * @param p
  * @return true
  * @return false
  */
-bool Polynomial::isEqual(const Polynomial& p) const {
+bool Polynomial::operator==(const Polynomial& p) const {
    int degree = getDegree();
 
    if (degree != p.getDegree()) {
@@ -352,22 +360,11 @@ bool Polynomial::isEqual(const Polynomial& p) const {
 }
 
 /**
- * Returns true if the two polynomials are equal, false otherwise.
- * 
- * @param p 
- * @return true 
- * @return false 
- */
-bool Polynomial::operator==(const Polynomial& p) const {
-   return isEqual(p);
-}
-
-/**
  * Returns true if the two polynomials are not equal, false otherwise.
- * 
- * @param p 
- * @return true 
- * @return false 
+ *
+ * @param p
+ * @return true
+ * @return false
  */
 bool Polynomial::operator!=(const Polynomial& p) const {
    return !(*this == p);
@@ -375,15 +372,15 @@ bool Polynomial::operator!=(const Polynomial& p) const {
 
 /**
  * Returns true if the left hand polynomial is less than the right hand.
- * 
- * @param p 
- * @return true 
- * @return false 
+ *
+ * @param p
+ * @return true
+ * @return false
  */
 bool Polynomial::operator<(const Polynomial& p) const {
    bool isLess = false;
 
-   if (isEqual(p)) {
+   if (*this == p) {
       return false;
    } else {
       int thisPower = getDegree();
@@ -405,12 +402,12 @@ bool Polynomial::operator<(const Polynomial& p) const {
 }
 
 /**
- * Returns true if the left hand polynomial 
+ * Returns true if the left hand polynomial
  * is less than or equal to the right hand.
- * 
- * @param p 
- * @return true 
- * @return false 
+ *
+ * @param p
+ * @return true
+ * @return false
  */
 bool Polynomial::operator<=(const Polynomial& p) const {
    return *this == p || *this < p;
@@ -418,22 +415,22 @@ bool Polynomial::operator<=(const Polynomial& p) const {
 
 /**
  * Returns true if the left hand polynomial is greater than the right hand.
- * 
- * @param p 
- * @return true 
- * @return false 
+ *
+ * @param p
+ * @return true
+ * @return false
  */
 bool Polynomial::operator>(const Polynomial& p) const {
    return !(*this <= p);
 }
 
 /**
- * Returns true if the left hand polynomial 
+ * Returns true if the left hand polynomial
  * is greater than or equal to the right hand.
- * 
- * @param p 
- * @return true 
- * @return false 
+ *
+ * @param p
+ * @return true
+ * @return false
  */
 bool Polynomial::operator>=(const Polynomial& p) const {
    return !(*this < p);
@@ -441,8 +438,8 @@ bool Polynomial::operator>=(const Polynomial& p) const {
 
 /**
  * Returns a string representation of the polynomial.
- * 
- * @return string 
+ *
+ * @return string
  */
 string Polynomial::toString() const {
    string s = "[";
@@ -455,6 +452,7 @@ string Polynomial::toString() const {
    }
 
    for (int i = -1; i < size; i++) {
+      // pre append negative sign if first ele is negative
       if (i == -1) {
          if (getElementAt(0) < 0) {
             s += "-";
@@ -533,12 +531,12 @@ string Polynomial::toString() const {
 
 /**
  * Overloaded << operator
- * Reuses toString() function for 
+ * Reuses toString() function for
  * string representation
- * 
- * @param out 
- * @param other 
- * @return ostream& 
+ *
+ * @param out
+ * @param other
+ * @return ostream&
  */
 ostream& operator<<(ostream& out, const Polynomial& other) {
    string s = other.toString();
@@ -547,16 +545,20 @@ ostream& operator<<(ostream& out, const Polynomial& other) {
 }
 
 /**
- * Overloaded >> operator to take in 
+ * Overloaded >> operator to take in
  * a polynomial in the form of a string
  * Left hand side should be highest power.
+ * Takes in polynomials the same way as they are output
+ * Input can have square brackets around it
+ * Negative terms marked by - x instead of
+ * + -x.
  *
  *
  * e.g: "x^3 + x^2 + x + 1"
- * 
- * @param in 
- * @param other 
- * @return istream& 
+ *
+ * @param in
+ * @param other
+ * @return istream&
  */
 istream& operator>>(istream& in, Polynomial& other) {
    vector<double> v;
@@ -566,73 +568,78 @@ istream& operator>>(istream& in, Polynomial& other) {
 
    istringstream s(input);
 
-   int iteration;
+   bool firstIteration = true;
    string degree;
    bool isNegative = false;
 
    string temp;
-   while(s >> temp) {
+   while (s >> temp) {
+      // store end bracket in variable so we dont have to
+      // search for it again when modifying temp
+      int endBrackPos = temp.find("]");
+
+      if (temp.find("[") != string::npos) {
+         temp = temp.substr(1);
+      } else if (endBrackPos != string::npos) {
+         temp = temp.substr(0, endBrackPos);
+      }
       // is negative will be true if previous operator was a '-'
-      if(isNegative) {
+      if (isNegative) {
          temp = "-" + temp;
          isNegative = false;
       }
 
       if (temp == "-") {
-         isNegative = true;  
-      } else if(temp == "+") { 
-         isNegative = false;  
+         isNegative = true;
+      } else if (temp == "+") {
+         isNegative = false;
       }
 
-      if(temp == "-" || temp == "+") {
-         iteration++;
+      if (temp == "-" || temp == "+") {
          continue;
          // skip iteration, cant do anything more with + and -
       }
 
-      
       int expInd = temp.find("^");
       int xInd = temp.find("x");
 
       // separate checks at iteration 0
       // in case polynomial is one element
       // also for determining vector size
-      if(iteration == 0) {
+      if (firstIteration) {
          // if ^ not in string
-         if(expInd == string::npos) {
-         // if no x and no ^ present, then only one constant element
-            if(xInd == string::npos) {  
+         if (expInd == string::npos) {
+            // if no x and no ^ present, then only one constant element
+            if (xInd == string::npos) {
                v.push_back(stoi(temp));
                Polynomial p(v);
                other = p;
                return in;
-            } else { // if x present and not ^
-               degree = 1; // e.g.  x == x^1
+            } else {        // if x present and not ^
+               degree = 1;  // e.g.  x == x^1
             }
          } else {
-            for(int i = expInd + 1; i < temp.length(); i++) {
+            for (int i = expInd + 1; i < temp.length(); i++) {
                degree += temp[i];
             }
          }
          v.resize(stoi(degree) + 1, 0);
-         
+         firstIteration = false;
       }
-
 
       string coeff;
       string pow;
       // if x index doesnt exist, then ^ isnt there either
       // must be a constant then
-      if(xInd == string::npos) {
+      if (xInd == string::npos) {
          coeff = temp;
          pow = "0";
-      }
-      else if(xInd != string::npos) { 
-         for(int i = 0; i < xInd; i++) {
+      } else if (xInd != string::npos) {
+         for (int i = 0; i < xInd; i++) {
             coeff += temp[i];
          }
-         if(expInd != string::npos) {
-            for(int i = expInd + 1; i < temp.length(); i++) { 
+         if (expInd != string::npos) {
+            for (int i = expInd + 1; i < temp.length(); i++) {
                pow += temp[i];
             }
          } else {
@@ -641,25 +648,20 @@ istream& operator>>(istream& in, Polynomial& other) {
          }
       }
 
-      // if the length of coeff is 0, 
+      // if the length of coeff is 0,
       // then there is an implied 1 in front of x
       // e.g.    x^2     <-   doesnt have a coefficient
-      if(coeff.length() == 0) {
+      if (coeff.length() == 0) {
          coeff = "1";
       }
-      
+
       int p = stoi(pow);
       int co = stoi(coeff);
 
       v.at(v.size() - p - 1) += co;
-
-      iteration++;
-   } 
+   }
 
    other = Polynomial(v);
 
    return in;
-
 }
-
-   
