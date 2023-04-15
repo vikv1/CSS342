@@ -1,8 +1,8 @@
 #include "polynomial.h"
 
 #include <algorithm>
-#include <sstream>
 #include <iostream>
+#include <sstream>
 
 using namespace std;
 
@@ -213,7 +213,7 @@ Polynomial Polynomial::addSub(const Polynomial& p, bool add) const {
  *
  *
  * Precondition: processed vector already has sums/differences
- * Postcondition: processed vector and unoperable powers are merged 
+ * Postcondition: processed vector and unoperable powers are merged
  *
  *
  * @param p - The bigger of the two initial polynomials
@@ -345,13 +345,13 @@ Polynomial& Polynomial::operator*=(const Polynomial& other) {
  * Returns the quotient of the two polynomials.
  * Or returns this if the divisor is bigger or 0.
 
- * @param other 
- * @return Polynomial 
+ * @param other
+ * @return Polynomial
  */
 Polynomial Polynomial::operator/(const Polynomial& other) const {
-   if(other > *this || other.getElementAt(0) == 0) {
+   if (other > *this || other.getElementAt(0) == 0) {
       return *this;
-   } else if(other == *this) {
+   } else if (other == *this) {
       Polynomial r({1});
       return r;
    }
@@ -359,13 +359,12 @@ Polynomial Polynomial::operator/(const Polynomial& other) const {
    int newDegree = getDegree() - other.getDegree();
    vector<double> v(newDegree + 1);
 
-   
    int otherPow = other.getPower(other.getSize(), 0);
 
    for (int i = 0; i < getSize(); i++) {
       int thisPow = getPower(getSize(), i);
       // check if divisor leading element can go into current dividen element
-      if(thisPow >= otherPow) { 
+      if (thisPow >= otherPow) {
          double div = getElementAt(i) / other.getElementAt(0);
          int newPow = thisPow - otherPow;
          v.at(newDegree - newPow) += div;

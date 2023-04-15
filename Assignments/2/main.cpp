@@ -62,8 +62,6 @@ int main() {
 
    // cout << p << endl;
 
-   
-
    return 0;
 }
 
@@ -224,8 +222,6 @@ void arithmeticTests(Polynomial& p1, Polynomial& p2) {
    p5 /= p4;
 
    assert(p5.toString() == "[x]");
-
-
 
    cout << "Passed all arithmetic tests" << endl;
    cout << "Tested: +, +=, -, -=, *, *=, /, /=\n" << endl;
