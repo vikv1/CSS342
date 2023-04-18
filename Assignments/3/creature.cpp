@@ -33,9 +33,11 @@ void Creature::solveHelper(Maze &Maze, int row, int col) {
          return;
       }
       if (!foundExit) solveHelper(Maze, row, col - 1);
-      if (!foundExit) solveHelper(Maze, row - 1, col);
       if (!foundExit) solveHelper(Maze, row, col + 1);
+      if (!foundExit) solveHelper(Maze, row - 1, col);
       if (!foundExit) solveHelper(Maze, row + 1, col);
+      
+      
    }
 
    if (this->row == row && this->col == col && foundExit) {
@@ -48,14 +50,14 @@ void Creature::solveHelper(Maze &Maze, int row, int col) {
    }
 
    if (foundExit) {
-      if (Maze.Field[row - 1][col] == '*') {
+      if (Maze.Field[row][col + 1] == '*') {
+         path += "E";
+      } else if (Maze.Field[row][col - 1] == '*') {
+         path += "W";
+      } else if (Maze.Field[row - 1][col] == '*') {
          path += "N";
       } else if (Maze.Field[row + 1][col] == '*') {
          path += "S";
-      } else if (Maze.Field[row][col - 1] == '*') {
-         path += "W";
-      } else if (Maze.Field[row][col + 1] == '*') {
-         path += "E";
       }
    }
 }
