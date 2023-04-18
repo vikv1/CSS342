@@ -1,7 +1,6 @@
 #include <iostream>
 
 #include "creature.h"
-#include "maze.h"
 #include <cassert>
 
 void test() {
