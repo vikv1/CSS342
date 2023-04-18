@@ -16,19 +16,19 @@ std::ostream &operator<<(std::ostream &Out, const Creature &Creature) {
 
 Creature::Creature(int Row, int Col) : row(Row), col(Col) {}
 
-bool Creature::atExit(const Maze &Maze) const {
-   return true;
+bool Creature::atExit(const Maze &Maze, int row, int col) const {
+   return row == Maze.getExitRow() && col == Maze.getExitColumn();
 }
 
 void Creature::solveHelper(Maze &Maze, int row, int col) {
-   if (Maze.Field[row][col] == 'x') {
+   if (!(Maze.isClear(row, col)/**Maze.Field[row][col] == 'x'*/)) {
       return;
    }
 
-   if (Maze.Field[row][col] != '+') {
-      Maze.Field[row][col] = '+';
-      if (row == Maze.getExitRow() && col == Maze.getExitColumn()) {
-         Maze.Field[row][col] = '*';
+   if (!(Maze.isVisited(row,col))) {
+      Maze.markAsVisited(row, col);
+      if (atExit(Maze, row, col)) {
+         Maze.markAsPath(row, col);
          foundExit = true;
          return;
       }
@@ -41,23 +41,23 @@ void Creature::solveHelper(Maze &Maze, int row, int col) {
    }
 
    if (this->row == row && this->col == col && foundExit) {
-      Maze.Field[row][col] = ' ';
+      Maze.clear(row, col);
       crossedInitial = true;
    }
 
    if (foundExit && !crossedInitial) {
-      Maze.Field[row][col] = '*';
+      Maze.markAsPath(row, col);
    }
 
    if (foundExit) {
-      if (Maze.Field[row][col + 1] == '*') {
-         path += "E";
-      } else if (Maze.Field[row][col - 1] == '*') {
-         path += "W";
-      } else if (Maze.Field[row - 1][col] == '*') {
-         path += "N";
-      } else if (Maze.Field[row + 1][col] == '*') {
-         path += "S";
+      if (Maze.isPath(row, col + 1)) {
+         path += goEast(Maze);
+      } else if (Maze.isPath(row, col - 1)) {
+         path += goWest(Maze);
+      } else if (Maze.isPath(row - 1, col)) {
+         path += goNorth(Maze);
+      } else if (Maze.isPath(row + 1, col)) {
+         path += goSouth(Maze);
       }
    }
 }
@@ -70,25 +70,17 @@ string Creature::solve(Maze &Maze) {
 }
 
 string Creature::goNorth(Maze &Maze) {
-   Maze.Field[row][col] = '*';
-   row -= 1;
-   return "X";
+   return "N";
 }
 
 string Creature::goWest(Maze &Maze) {
-   Maze.Field[row][col] = '*';
-   col -= 1;
-   return "X";
+   return "W";
 }
 
 string Creature::goEast(Maze &Maze) {
-   Maze.Field[row][col] = '*';
-   col += 1;
-   return "X";
+   return "E";
 }
 
 string Creature::goSouth(Maze &Maze) {
-   Maze.Field[row][col] = '*';
-   row += 1;
-   return "X";
+   return "S";
 }

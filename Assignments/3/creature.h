@@ -27,7 +27,7 @@ class Creature {
 
 
    //IMPLEMENT
-   bool atExit(const Maze &Maze) const;
+   bool atExit(const Maze &Maze, int row, int col) const;
    string goNorth(Maze &Maze);
    string goSouth(Maze &Maze);
    string goEast(Maze &Maze);

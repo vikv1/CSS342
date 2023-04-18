@@ -14,7 +14,6 @@ enum CELL { CLEAR, WALL, PATH, VISITED };
 
 class Maze {
    friend ostream &operator<<(ostream &Out, const Maze &Maze);
-   friend class Creature;
 
  private:
    const static int MAX_SIZE = 100;
@@ -26,8 +25,11 @@ class Maze {
  public:
    explicit Maze(const string &FileName);
    bool isClear(int Row, int Col) const;
+   bool isVisited(int Row, int Col) const;
+   bool isPath(int Row, int Col) const;
    void markAsPath(int Row, int Col);
    void markAsVisited(int Row, int Col);
+   void clear(int Row, int Col);
    int getExitRow() const;
    int getExitColumn() const;
 };

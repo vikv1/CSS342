@@ -52,6 +52,10 @@ int Maze::getExitColumn() const {
    return exitColumn;
 }
 
+void Maze::clear(int Row, int Col) {
+   Field[Row][Col] = ' ';
+}
+
 bool Maze::isClear(int Row, int Col) const {
    return Field[Row][Col] == ' ';
 }
@@ -60,6 +64,14 @@ void Maze::markAsPath(int Row, int Col) {
    Field[Row][Col] = '*';
 }
 
+bool Maze::isPath(int Row, int Col) const {
+   return Field[Row][Col] == '*';
+}
+
 void Maze::markAsVisited(int Row, int Col) {
    Field[Row][Col] = '+';
+}
+
+bool Maze::isVisited(int Row, int Col) const {
+   return Field[Row][Col] == '+';
 }
