@@ -32,6 +32,8 @@ void Creature::solveHelper(Maze &Maze, int row, int col) {
          foundExit = true;
          return;
       }
+      
+      // greater risk of stack overflow if keep searching after exit found
       if (!foundExit) solveHelper(Maze, row, col - 1);
       if (!foundExit) solveHelper(Maze, row, col + 1);
       if (!foundExit) solveHelper(Maze, row - 1, col);
@@ -40,14 +42,25 @@ void Creature::solveHelper(Maze &Maze, int row, int col) {
       
    }
 
-   if (this->row == row && this->col == col && foundExit) {
+   if (this->row == row && this->col == col) {
       Maze.clear(row, col);
       crossedInitial = true;
    }
 
+   // if all recursive calls finish and we are back to initial call
+   // and exit still not found, then it doesnt exist
+   if (!foundExit && crossedInitial) {
+      cerr << "unsolvable" << endl; 
+      return;
+   }
+
+   // if all recursive calls finish and exit found,
+   // change + to * on the way back to initial location
    if (foundExit && !crossedInitial) {
       Maze.markAsPath(row, col);
    }
+
+
 
    if (foundExit) {
       if (Maze.isPath(row, col + 1)) {
@@ -63,10 +76,19 @@ void Creature::solveHelper(Maze &Maze, int row, int col) {
 }
 
 string Creature::solve(Maze &Maze) {
-   solveHelper(Maze, row, col);
-   reverse(path.begin(), path.end());
+   if(Maze.isWall(row, col)) {
+      cerr << "creature placed on wall" << endl;
+      return path;
+   } else {
+      solveHelper(Maze, row, col);
+      reverse(path.begin(), path.end());
+   }
 
-   return this->path;
+   string t = path;
+   path = "";
+   
+
+   return t;
 }
 
 string Creature::goNorth(Maze &Maze) {

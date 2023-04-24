@@ -27,6 +27,7 @@ class Maze {
    bool isClear(int Row, int Col) const;
    bool isVisited(int Row, int Col) const;
    bool isPath(int Row, int Col) const;
+   bool isWall(int Row, int Col) const;
    void markAsPath(int Row, int Col);
    void markAsVisited(int Row, int Col);
    void clear(int Row, int Col);

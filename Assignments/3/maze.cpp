@@ -68,6 +68,10 @@ bool Maze::isPath(int Row, int Col) const {
    return Field[Row][Col] == '*';
 }
 
+bool Maze::isWall(int Row, int Col) const {
+   return Field[Row][Col] == 'x';
+}
+
 void Maze::markAsVisited(int Row, int Col) {
    Field[Row][Col] = '+';
 }
