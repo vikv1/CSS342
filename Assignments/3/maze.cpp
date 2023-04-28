@@ -18,10 +18,10 @@ using namespace std;
 /**
  * Outputs the string representation of the 2D array
  * in which the maze is stored
- * 
- * @param Out 
- * @param Maze 
- * @return ostream& 
+ *
+ * @param Out
+ * @param Maze
+ * @return ostream&
  */
 ostream &operator<<(ostream &Out, const Maze &Maze) {
    for (int row = 0; row < Maze.height; ++row) {
@@ -40,8 +40,8 @@ ostream &operator<<(ostream &Out, const Maze &Maze) {
 // set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 /**
  * Constructs a maze from a text file, using a 2D array
- * 
- * @param FileName 
+ *
+ * @param FileName
  */
 Maze::Maze(const string &FileName) {
    ifstream inFile;
@@ -65,8 +65,8 @@ Maze::Maze(const string &FileName) {
 
 /**
  * Returns exit row
- * 
- * @return int 
+ *
+ * @return int
  */
 int Maze::getExitRow() const {
    return exitRow;
@@ -74,8 +74,8 @@ int Maze::getExitRow() const {
 
 /**
  * Returns exit col
- * 
- * @return int 
+ *
+ * @return int
  */
 int Maze::getExitColumn() const {
    return exitColumn;
@@ -83,11 +83,11 @@ int Maze::getExitColumn() const {
 
 /**
  * Returns if the row and col is clear
- * 
- * @param Row 
- * @param Col 
- * @return true 
- * @return false 
+ *
+ * @param Row
+ * @param Col
+ * @return true
+ * @return false
  */
 bool Maze::isClear(int Row, int Col) const {
    return Field[Row][Col] == ' ';
@@ -95,9 +95,9 @@ bool Maze::isClear(int Row, int Col) const {
 
 /**
  * Marks the row and col as the path
- * 
- * @param Row 
- * @param Col 
+ *
+ * @param Row
+ * @param Col
  */
 void Maze::markAsPath(int Row, int Col) {
    Field[Row][Col] = '*';
@@ -105,11 +105,11 @@ void Maze::markAsPath(int Row, int Col) {
 
 /**
  * Returns if the row and col is the path
- * 
- * @param Row 
- * @param Col 
- * @return true 
- * @return false 
+ *
+ * @param Row
+ * @param Col
+ * @return true
+ * @return false
  */
 bool Maze::isPath(int Row, int Col) const {
    return Field[Row][Col] == '*';
@@ -117,11 +117,11 @@ bool Maze::isPath(int Row, int Col) const {
 
 /**
  * Returns if the row and col is a wall
- * 
- * @param Row 
- * @param Col 
- * @return true 
- * @return false 
+ *
+ * @param Row
+ * @param Col
+ * @return true
+ * @return false
  */
 bool Maze::isWall(int Row, int Col) const {
    return Field[Row][Col] == 'x';
@@ -129,9 +129,9 @@ bool Maze::isWall(int Row, int Col) const {
 
 /**
  * Marks the row and col as visited
- * 
- * @param Row 
- * @param Col 
+ *
+ * @param Row
+ * @param Col
  */
 void Maze::markAsVisited(int Row, int Col) {
    Field[Row][Col] = '+';
