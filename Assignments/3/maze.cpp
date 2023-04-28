@@ -7,6 +7,12 @@
 #include <iostream>
 #include <string>
 
+/**
+ * Maze implementation
+ * Allows for checking the property of a row, col in the maze
+ * Stores the maze in a 2d array
+ */
+
 using namespace std;
 
 ostream &operator<<(ostream &Out, const Maze &Maze) {
@@ -52,10 +58,6 @@ int Maze::getExitColumn() const {
    return exitColumn;
 }
 
-void Maze::clear(int Row, int Col) {
-   Field[Row][Col] = ' ';
-}
-
 bool Maze::isClear(int Row, int Col) const {
    return Field[Row][Col] == ' ';
 }
@@ -74,8 +76,4 @@ bool Maze::isWall(int Row, int Col) const {
 
 void Maze::markAsVisited(int Row, int Col) {
    Field[Row][Col] = '+';
-}
-
-bool Maze::isVisited(int Row, int Col) const {
-   return Field[Row][Col] == '+';
 }

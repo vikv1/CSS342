@@ -1,10 +1,9 @@
+#include <cassert>
 #include <iostream>
 
 #include "creature.h"
-#include <cassert>
 
 void test() {
-
    Maze m("maze.txt");
    Creature c(4, 4);
    string path = c.solve(m);
@@ -28,7 +27,6 @@ void test() {
    string path4 = c4.solve(m4);
    cout << "Path: " << path4 << endl;
    cout << m4 << endl;
-
 }
 
 int main() {
