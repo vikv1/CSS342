@@ -86,7 +86,7 @@ bool Creature::atExit(const Maze &Maze, int row, int col) const {
  * The row and col parameters given intially is the starting location.
  *
  * The function recursively calls itself to iterate through the maze,
- * thus the row and col parameters are automatically adjusted when backtracking.
+ * the row and col parameters are automatically adjusted when backtracking
  *
  * The algorithm the function uses is a depth first search,
  * where it tries to go as far west as possible,
