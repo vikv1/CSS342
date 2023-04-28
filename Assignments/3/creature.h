@@ -4,7 +4,7 @@
 #ifndef ASS3_CREATURE_H
 #define ASS3_CREATURE_H
 
-#include <ostream>
+#include <iostream>
 
 #include "maze.h"
 

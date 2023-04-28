@@ -4,8 +4,6 @@
 #include "creature.h"
 
 #include <algorithm>
-#include <cmath>
-#include <iostream>
 #include <sstream>
 #include <string>
 
