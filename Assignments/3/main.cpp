@@ -7,6 +7,7 @@ void test() {
    Creature c(4, 4);
    string path = c.solve(m);
    cout << "Path: " << path << endl;
+   assert(path == "EEENNNEEEEEESEESSSEEENNNNN");
    cout << m << endl;
 
    Maze m2("maze2.txt");
