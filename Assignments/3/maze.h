@@ -5,8 +5,7 @@
 #ifndef ASS3_MAZE_H
 #define ASS3_MAZE_H
 
-#include <ostream>
-#include <vector>
+#include <iostream>
 
 /**
  * Maze header

@@ -22,10 +22,10 @@ clang++ -std=c++14 -Wall -Wextra -Wno-sign-compare *.cpp -g -o myprogram
 
 echo "*** running clang-tidy using options from .clang-tidy"
 clang-tidy --version
-clang-tidy *.cpp -- -std=c++14
+clang-tidy *.cpp -header-filter= -- -std=c++14
 
 echo "*** running myprogram"
-./myprogram > output.txt 2>&1
+./myprogram
 # valgrind will detect memory leaks
 # echo "*** running with valgrind"
 # valgrind ./myprogram.exe
