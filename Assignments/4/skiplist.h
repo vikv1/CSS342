@@ -1,4 +1,5 @@
 /**
+ /**
  * SkipList https://en.wikipedia.org/wiki/Skip_list
  * also used by MemSQL
  * https://www.singlestore.com/blog/what-is-skiplist-why-skiplist-index-for-memsql/
@@ -23,6 +24,7 @@
 
 #include <iostream>
 #include <vector>
+#include <string.h>
 
 using namespace std;
 
@@ -31,72 +33,81 @@ using namespace std;
 class SkipList;
 
 class SNode {
-   // SkipList can access SNode's private variables
-   friend class SkipList;
+    // SkipList can access SNode's private variables
+    friend class SkipList;
 
-   // operator<< for printing can access val directly
-   friend ostream &operator<<(ostream &out, const SkipList &skip);
+    // operator<< for printing can access val directly
+    friend ostream& operator<<(ostream &out, const SkipList &skip);
 
- private:
-   // constructor
-   explicit SNode(int val = 0, int level = 1);
+    friend ostream &operator<<(ostream &out, const SNode* sNode) {
+       return out << sNode->val;
+    }
 
-   // copy constructor
-   SNode(const SNode &other);
 
-   // data contained in the object
-   int val;
+private:
+    // constructor
+    explicit SNode(int val = 0);
 
-   // link to Next SNode at each level
-   vector<SNode *> next;
+    // copy constructor
+    SNode(const SNode &other);
+
+    // data contained in the object
+    int val;
+
+    // link to Next SNode at each level
+    vector<SNode *> next;
 };
 
 class SkipList {
-   // display with level
-   friend ostream &operator<<(ostream &out, const SkipList &skip);
 
- private:
-   // Number of levels in SkipList
-   int levels;
+    // display with level
+    friend ostream &operator<<(ostream &out, const SkipList &skip);
 
-   // probability of inserting at a higher level
-   // as an integer between 0% and 100% (exclusive)
-   int probability;
+private:
+    // Number of levels in SkipList
+    int levels;
 
-   // special head SNode that is always present
-   SNode *head;
+    int curLevel;
 
-   // return true p% of time,
-   // for p = 50, each node has a 50% chance of being at higher level
-   bool shouldInsertAtHigherLevel() const;
+    // probability of inserting at a higher level
+    // as an integer between 0% and 100% (exclusive)
+    int probability;
 
-   int curLevel(vector<SNode*>& v) const;
+    // special head SNode that is always present
+    SNode *head;
 
-   // collect all SNode* objects that come before this value at each level
-   // used as a helper funnction to add and remove
-   vector<SNode *> getBeforeNodes(int val) const;
+    // return true p% of time,
+    // for p = 50, each node has a 50% chance of being at higher level
+    bool shouldInsertAtHigherLevel() const;
 
- public:
-   // default SkipList has Depth of 1, just one doubly-linked list
-   explicit SkipList(int levels = 1, int probability = 0);
+    // collect all SNode* objects that come before this value at each level
+    // used as a helper function to add and remove
+    vector<SNode *> getBeforeNodes(int val) const;
 
-   // copy constructor
-   SkipList(const SkipList &other);
+    void clear();
 
-   // destructor
-   virtual ~SkipList();
+public:
 
-   // Add to list, assume no duplicates
-   void add(int val);
+    // default SkipList has Depth of 1, just one doubly-linked list
+    explicit SkipList(int levels = 1, int probability = 0);
 
-   // Add to list, assume no duplicates
-   void add(const vector<int> &values);
+    // copy constructor
+    SkipList(const SkipList &other);
 
-   // return true if successfully removed
-   bool remove(int val);
+    // destructor
+    virtual ~SkipList();
 
-   // return true if found in SkipList
-   bool contains(int val) const;
+    // Add to list, assume no duplicates
+    void add(int val);
+
+    // Add to list, assume no duplicates
+    void add(const vector<int> &values);
+
+    // return true if successfully removed
+    bool remove(int val);
+
+    // return true if found in SkipList
+    bool contains(int val) const;
 };
 
-#endif  // ASS4_SKIPLIST_H
+#endif // ASS4_SKIPLIST_H

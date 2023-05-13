@@ -6,16 +6,16 @@
 using namespace std;
 
 class Random {
- private:
-   // internal counter
-   static int counter;
+private:
+    // internal counter
+    static int counter;
 
-   // list of random numbers
-   static const vector<int> NUMS;
+    // list of random numbers
+    static const vector<int> NUMS;
 
- public:
-   // return a pseudorandom number
-   static int random();
+public:
+    // return a pseudorandom number
+    static int random();
 };
 
 #endif
