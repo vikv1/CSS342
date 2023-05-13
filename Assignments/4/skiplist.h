@@ -1,5 +1,4 @@
 /**
- /**
  * SkipList https://en.wikipedia.org/wiki/Skip_list
  * also used by MemSQL
  * https://www.singlestore.com/blog/what-is-skiplist-why-skiplist-index-for-memsql/
