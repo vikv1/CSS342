@@ -18,12 +18,21 @@
  *
  */
 
+/**
+ * SkipList that supports insertion, deletion,
+ * and lookup in logn time by traversing top down.
+ *
+ * @authors Cami Lacy, Vikrant Verma
+ *
+ * 🐄
+ */
+
 #ifndef SKIPLIST_H
 #define SKIPLIST_H
 
 #include <iostream>
-#include <vector>
 #include <string.h>
+#include <vector>
 
 using namespace std;
 
@@ -32,81 +41,86 @@ using namespace std;
 class SkipList;
 
 class SNode {
-    // SkipList can access SNode's private variables
-    friend class SkipList;
+  // SkipList can access SNode's private variables
+  friend class SkipList;
 
-    // operator<< for printing can access val directly
-    friend ostream& operator<<(ostream &out, const SkipList &skip);
+  // prints the value of an SNode
+  friend ostream &operator<<(ostream &out, const SNode *sNode) {
+    return out << sNode->val;
+  }
 
-    friend ostream &operator<<(ostream &out, const SNode* sNode) {
-       return out << sNode->val;
-    }
-
+  // this declaration is also needed so SNode properties can be
+  // accessed in the SkipList << overload
+  friend ostream &operator<<(ostream &out, const SkipList &skip);
 
 private:
-    // constructor
-    explicit SNode(int val = 0);
+  // constructor
+  explicit SNode(int val = 0);
 
-    // copy constructor
-    SNode(const SNode &other);
+  // copy constructor
+  SNode(const SNode &other);
 
-    // data contained in the object
-    int val;
+  // data contained in the object
+  int val;
 
-    // link to Next SNode at each level
-    vector<SNode *> next;
+  // link to Next SNode at each level
+  vector<SNode *> next;
 };
 
 class SkipList {
 
-    // display with level
-    friend ostream &operator<<(ostream &out, const SkipList &skip);
+  // display by level
+  friend ostream &operator<<(ostream &out, const SkipList &skip);
 
 private:
-    // Number of levels in SkipList
-    int levels;
+  // Number of levels in SkipList
+  int levels;
 
-    int curLevel;
+  // probability of inserting at a higher level
+  // as an integer between 0% and 100% (exclusive)
+  int probability;
 
-    // probability of inserting at a higher level
-    // as an integer between 0% and 100% (exclusive)
-    int probability;
+  // special head SNode that is always present
+  SNode *head;
 
-    // special head SNode that is always present
-    SNode *head;
+  // return true p% of time,
+  // for p = 50, each node has a 50% chance of being at higher level
+  bool shouldInsertAtHigherLevel() const;
 
-    // return true p% of time,
-    // for p = 50, each node has a 50% chance of being at higher level
-    bool shouldInsertAtHigherLevel() const;
+  // collect all SNode* objects that come before this value at each level
+  // used as a helper function to add and remove
+  vector<SNode *> getBeforeNodes(int val) const;
 
-    // collect all SNode* objects that come before this value at each level
-    // used as a helper function to add and remove
-    vector<SNode *> getBeforeNodes(int val) const;
+  // clears all nodes in a skip list
+  void clear();
 
-    void clear();
+  // forces insertion of a node with a certain level
+  void forceInsertion(int val, int level);
+
+  // returns all nodes in a skiplist (the bottom level)
+  vector<SNode *> getLevel0() const;
 
 public:
+  // Constructor with a default level count of 1
+  explicit SkipList(int levels = 1, int probability = 0);
 
-    // default SkipList has Depth of 1, just one doubly-linked list
-    explicit SkipList(int levels = 1, int probability = 0);
+  // Copy Constructor
+  SkipList(const SkipList &other);
 
-    // copy constructor
-    SkipList(const SkipList &other);
+  // Destructor
+  virtual ~SkipList();
 
-    // destructor
-    virtual ~SkipList();
+  // Adds a val to the list, doesn't allow duplicates
+  void add(int val);
 
-    // Add to list, assume no duplicates
-    void add(int val);
+  // Adds a vector of vals to the list, doesn't allow duplicates
+  void add(const vector<int> &values);
 
-    // Add to list, assume no duplicates
-    void add(const vector<int> &values);
+  // Removes a value, returns true if successful
+  bool remove(int val);
 
-    // return true if successfully removed
-    bool remove(int val);
-
-    // return true if found in SkipList
-    bool contains(int val) const;
+  // Returns true if value is in skip list
+  bool contains(int val) const;
 };
 
 #endif // ASS4_SKIPLIST_H
