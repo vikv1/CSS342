@@ -1,11 +1,20 @@
+/**
+ *
+ * Threaded Binary Tree structure
+ *             this isme          nrd
+ * @authors Vikrant Verma, Cami Lacy
+ *
+ * 🐄🐄🐄🐄🐄🐄🐄🐄🐄🐄🐄🐄🐄🐄🐄🐄🐄🐄🐄🐄🐄🐄🐄🐄 MOO
+ */
+
 #include "tbtree.h"
 #include <iostream>
 
 int main() {
 
-  Tbtree t;
+  TbsTree t;
 
-  t.add(5);
+  t.add(1);
   //   t.add(2);
   //   t.add(1);
   t.add(4);
@@ -13,6 +22,10 @@ int main() {
   t.add(3);
 
   Iterator i;
+  //   i.inorderTraverse(t.getRoot());
+
+  t.remove(4);
+
   i.inorderTraverse(t.getRoot());
 
   return 0;

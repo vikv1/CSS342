@@ -15,12 +15,12 @@
 
 using namespace std;
 
-class Tbtree;
+class TbsTree;
 class Iterator;
 
 class TNode {
   // Tbtree can access tNode's private variables
-  friend class Tbtree;
+  friend class TbsTree;
   friend class Iterator;
 
   // prints the value of an tNode
@@ -30,7 +30,7 @@ class TNode {
 
   // this declaration is also needed so tNode properties can be
   // accessed in the Tbtree << overload
-  friend ostream &operator<<(ostream &out, const Tbtree &argTree);
+  friend ostream &operator<<(ostream &out, const TbsTree &argTree);
 
 private:
   // default constructor
@@ -50,23 +50,23 @@ private:
   TNode *rtPtr;
 };
 
-class Tbtree {
+class TbsTree {
   // display tree
-  friend ostream &operator<<(ostream &out, const Tbtree &argTree);
+  friend ostream &operator<<(ostream &out, const TbsTree &argTree);
   friend class Iterator;
 
 public:
   // default constructor
-  Tbtree();
+  TbsTree();
 
   // copy constructor
-  Tbtree(const Tbtree &tree);
+  TbsTree(const TbsTree &tree);
 
   // takes integer, specifies no. of nodes in tree
-  explicit Tbtree(int val);
+  explicit TbsTree(int val);
 
   // destructor
-  virtual ~Tbtree();
+  virtual ~TbsTree();
 
   // Adds a val to the tree, doesn't allow duplicates
   void add(int val);
@@ -100,6 +100,8 @@ private:
   // Search tree for value and return address, logn operation
   TNode *searchTree(int val) const;
 
+  TNode *searchParentOf(int val) const;
+
   // Redo thread pointer helper
   TNode *getBeforeNode(const TNode &argNode) const;
 
@@ -110,12 +112,14 @@ private:
   TNode *getInOrderSuccessor(const TNode *argNode);
 
   // Get the height of a binary search tree.
-  int getHeight() const;
+  int getHeight();
 
   int heightHelper(const TNode *argNode);
 
   // Get the number of nodes in a binary search tree.
   int getNumNodes() const;
+
+  int numNodesHelper(TNode *curNode, int countNodes) const;
 
   // Get the data in a binary search tree’s root
   int getRootVal() const;
@@ -126,7 +130,7 @@ private:
 
 class Iterator {
   // Tbtree can access Iterator private variables
-  friend class Tbtree;
+  friend class TbsTree;
   friend class TNode;
 
 public:
