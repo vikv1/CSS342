@@ -26,7 +26,7 @@ clang-tidy --version
 clang-tidy *.cpp -- -std=c++14
 
 echo "*** running myprogram"
-#./myprogram
+./myprogram
 
 #valgrind will detect memory leaks
 echo "*** running with valgrind"
