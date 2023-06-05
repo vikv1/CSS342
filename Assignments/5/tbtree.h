@@ -12,6 +12,7 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -43,7 +44,7 @@ private:
   int val;
 
   // check if right pointer is a thread
-  bool isThread;
+  bool isThread = false;
 
   // pointers to children
   TNode *lftPtr;
@@ -71,7 +72,8 @@ public:
   // Adds a val to the tree, doesn't allow duplicates
   void add(int val);
 
-  // Helper for add
+  // adds a vectpr of vals
+  void add(vector<int> &vals);
 
   // Removes a value, returns true if successful
   bool remove(int val);
@@ -79,7 +81,14 @@ public:
   // Returns true if value is in tree
   bool contains(int val) const;
 
+  // Get the height of a binary search tree.
+  int getHeight();
+
+  // returns root node
   TNode *getRoot() const;
+
+  // clears all nodes in threaded binary tree
+  void deleteAll();
 
 private:
   // starts as nulllptr
@@ -88,44 +97,47 @@ private:
   // clears all nodes in threaded binary tree
   void clear();
 
-  TNode *add(TNode *cur, int val);
-
   // check empty tree
   bool isEmpty() const;
 
-  // check leaf by checking if isThread is true
-  // and if on the rightmost node with 2 nullptr/no thread
-  bool isLeaf(const TNode &argNode) const;
-
-  // Search tree for value and return address, logn operation
+  // Search tree for value and return address
   TNode *searchTree(int val) const;
 
-  TNode *searchParentOf(int val) const;
+  // gets predecessor of node
+  TNode *findPredecessor(TNode *start, TNode *node) const;
 
-  // Redo thread pointer helper
-  TNode *getBeforeNode(const TNode &argNode) const;
+  // method wrapped by remove to del a node
+  TNode *removeHelper(TNode *root, int val);
 
-  // Rethreads a node, used after deletion
-  void rethread(const TNode *argNode);
+  // removal case if node has no children
+  TNode *ifLeaf(TNode *root, TNode *t, TNode *p);
 
-  // Gets the next largest value and threads argNode to it
-  TNode *getInOrderSuccessor(const TNode *argNode);
+  // removal case if node has one child
+  TNode *ifOneChild(TNode *root, TNode *t, TNode *p);
 
-  // Get the height of a binary search tree.
-  int getHeight();
+  // removal case if node has two children
+  TNode *ifTwoChild(TNode *root, TNode *t);
 
-  int heightHelper(const TNode *argNode);
+  // max node in subtree
+  TNode *maxNode(TNode *start) const;
+
+  // Gets the next largest value
+  TNode *getInOrderSuccessor(TNode *argNode) const;
+
+  // recursive method to add a vector in a balanced fashion
+  TNode *add(vector<int> &vals, int start, int end);
+
+  // helper for getheight
+  int heightHelper(TNode *argNode) const;
 
   // Get the number of nodes in a binary search tree.
   int getNumNodes() const;
 
+  // helper to get numnodes
   int numNodesHelper(TNode *curNode, int countNodes) const;
 
-  // Get the data in a binary search tree’s root
-  int getRootVal() const;
-
-  int curDepth;
-  int maxDepth;
+  // return inorder vector representation of tree
+  void inorderTraverseToVector(TNode *cur, vector<int> &v) const;
 };
 
 class Iterator {
@@ -135,7 +147,7 @@ class Iterator {
 
 public:
   // performs inorder traversal
-  void inorderTraverse(TNode *cur);
+  void inorderTraverse(TNode *cur, TbsTree &t);
 };
 
 #endif

@@ -1,10 +1,10 @@
 /**
  *
  * Threaded Binary Tree structure
- *             this isme          nrd
+ *             this isnrd
  * @authors Vikrant Verma, Cami Lacy
  *
- * 🐄🐄🐄🐄🐄🐄🐄🐄🐄🐄🐄🐄🐄🐄🐄🐄🐄🐄🐄🐄🐄🐄🐄🐄 MOO
+ * 🐄🐄🐄🐄🐄🐄🐄🐄🐄🐄🐄🐄🐄🐄🐄🐄🐄🐄🐄🐄🐄🐄🐄🐄 MOOooooooo
  */
 
 #include "tbtree.h"
@@ -12,21 +12,25 @@
 
 int main() {
 
-  TbsTree t;
+  int n = 0;
+  cout << "input: ";
+  cin >> n;
+  cout << endl;
 
-  t.add(1);
-  //   t.add(2);
-  //   t.add(1);
-  t.add(4);
-  t.add(2);
-  t.add(3);
+  TbsTree t(n);
+  TbsTree t2(t);
 
+   // remove all even from copy
+  for (int i = 2; i <= n; i += 2) {
+    t2.remove(i);
+  }
+
+  cout << "t2" << endl;
   Iterator i;
-  //   i.inorderTraverse(t.getRoot());
+  i.inorderTraverse(t2.getRoot(), t2);
 
-  t.remove(4);
-
-  i.inorderTraverse(t.getRoot());
+  cout << "t" << endl;
+  cout << t << endl;
 
   return 0;
 }
